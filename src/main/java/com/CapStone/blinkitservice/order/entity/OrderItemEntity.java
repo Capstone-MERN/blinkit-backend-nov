@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.blinkitservice.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderItem {
+public class OrderItemEntity {
 
     @Id
     @Column(name = "id")
@@ -29,7 +29,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    Order order;
+    OrderEntity orderEntity;
 
     //@ManyToOne
     //@JoinColumn(name = "product_id", nullable = false)

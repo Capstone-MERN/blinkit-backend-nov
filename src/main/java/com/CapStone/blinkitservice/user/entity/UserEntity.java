@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.blinkitservice.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class UserEntity {
 
     @Id
     @Column(name = "id")

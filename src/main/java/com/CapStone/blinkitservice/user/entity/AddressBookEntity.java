@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.blinkitservice.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AddressBook {
+public class AddressBookEntity {
 
     @Id
     @Column(name = "id")
@@ -35,6 +35,6 @@ public class AddressBook {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    UserEntity userEntity;
 
 }

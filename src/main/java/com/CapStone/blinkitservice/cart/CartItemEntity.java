@@ -1,6 +1,7 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.blinkitservice.cart;
 
 
+import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItem {
+public class CartItemEntity {
 
     @Id
     @Column(name = "id")
@@ -24,7 +25,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    UserEntity userEntity;
 
 //    @ManyToOne
 //    @JoinColumn(name = "product_id", nullable = false)

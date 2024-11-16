@@ -1,6 +1,8 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.blinkitservice.order.entity;
 
-import com.CapStone.BlinkIt_BackEnd.Enums.DeliveryStatus;
+import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
+import com.CapStone.blinkitservice.order.enums.DeliveryStatus;
+import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Order {
+public class OrderEntity {
 
     @Id
     @Column(name = "id")
@@ -47,11 +49,11 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    UserEntity userEntity;
 
     @ManyToOne
     @JoinColumn(name = "address_book_id", nullable = false)
-    AddressBook addressBook;
+    AddressBookEntity addressBookEntity;
 
 
 
