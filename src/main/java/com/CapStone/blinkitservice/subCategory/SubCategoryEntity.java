@@ -1,6 +1,7 @@
 package com.CapStone.blinkitservice.subCategory;
 
 
+import com.CapStone.blinkitservice.category.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class subCategoryEntity {
+public class SubCategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class subCategoryEntity {
 
     String image_url;
 
-//    @ManyToOne
-//            @JoinColumn
-//    Integer category_id;
+    @ManyToOne
+            @JoinColumn
+    CategoryEntity category;
 }

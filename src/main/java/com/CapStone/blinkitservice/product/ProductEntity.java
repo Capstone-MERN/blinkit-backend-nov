@@ -1,6 +1,8 @@
 package com.CapStone.blinkitservice.product;
 
 
+import com.CapStone.blinkitservice.brand.BrandEntity;
+import com.CapStone.blinkitservice.subCategory.SubCategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -35,11 +37,11 @@ public class ProductEntity {
     String packeging_type;
     String key_features;
 
-//    @OneToMany
-//            @JoinColumn
-//    Integer sub_category_id;
+    @ManyToOne
+            @JoinColumn
+    SubCategoryEntity subCategory;
 //
-//    @OneToMany
-//            @JoinColumn
-//    Integer brand_id;
+    @ManyToOne
+            @JoinColumn
+    BrandEntity brand;
 }
