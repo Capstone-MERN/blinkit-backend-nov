@@ -1,36 +1,32 @@
-package com.CapStone.blinkitservice.order.entity;
+package com.CapStone.blinkitservice.cart.entity;
+
 
 import com.CapStone.blinkitservice.product.ProductEntity;
+import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "order_items")
+@Table(name = "cart_items")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderItemEntity {
+public class CartItemEntity {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "cart_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @Column(name = "quantity", nullable = false)
-    int quantity;
-
-    @Column(name = "amount_paid", nullable = false)
-    float amountPaid;
-
-    @Column(name = "discount")
-    Float discount;
+    @Column(name = "quantity")
+    Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    OrderEntity orderEntity;
+    @JoinColumn(name = "user_id", nullable = false)
+    UserEntity userEntity;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

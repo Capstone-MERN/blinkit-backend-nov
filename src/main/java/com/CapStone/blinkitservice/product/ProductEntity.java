@@ -2,7 +2,7 @@ package com.CapStone.blinkitservice.product;
 
 
 import com.CapStone.blinkitservice.brand.BrandEntity;
-import com.CapStone.blinkitservice.subCategory.SubCategoryEntity;
+import com.CapStone.blinkitservice.subcategory.SubCategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,8 +15,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ProductEntity {
+
     @Id
-            @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer id;
 
     @JoinColumn(nullable = false)
@@ -38,10 +39,10 @@ public class ProductEntity {
     String key_features;
 
     @ManyToOne
-            @JoinColumn
+    @JoinColumn
     SubCategoryEntity subCategory;
-//
+
     @ManyToOne
-            @JoinColumn
+    @JoinColumn
     BrandEntity brand;
 }
