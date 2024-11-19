@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd;
+package com.CapStone.blinkitservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
