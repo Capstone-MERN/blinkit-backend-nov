@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.BlinkIt_BackEnd.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +22,7 @@ public class OrderItem {
     int quantity;
 
     @Column(name = "amount_paid", nullable = false)
-    float amountPaid;
+    Float amountPaid;
 
     @Column(name = "discount")
     Float discount;

@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.BlinkIt_BackEnd.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

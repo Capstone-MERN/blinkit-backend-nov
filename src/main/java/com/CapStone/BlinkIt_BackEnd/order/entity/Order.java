@@ -1,6 +1,8 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.BlinkIt_BackEnd.order.entity;
 
-import com.CapStone.BlinkIt_BackEnd.Enums.DeliveryStatus;
+import com.CapStone.BlinkIt_BackEnd.address.entity.AddressBook;
+import com.CapStone.BlinkIt_BackEnd.user.entity.User;
+import com.CapStone.BlinkIt_BackEnd.order.Enum.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +26,7 @@ public class Order {
     long timestamp;
 
     @Column(name = "total_amount_paid", nullable = false)
-    float totalAmountPaid;
+    Float totalAmountPaid;
 
     @Column(name = "delivery_charge")
     Float deliveryCharge;

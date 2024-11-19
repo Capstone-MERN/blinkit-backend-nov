@@ -1,5 +1,6 @@
-package com.CapStone.BlinkIt_BackEnd.Entity;
+package com.CapStone.BlinkIt_BackEnd.address.entity;
 
+import com.CapStone.BlinkIt_BackEnd.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
