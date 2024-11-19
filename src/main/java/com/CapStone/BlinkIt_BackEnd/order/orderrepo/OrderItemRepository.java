@@ -1,4 +1,4 @@
-package com.CapStone.BlinkIt_BackEnd.order;
+package com.CapStone.BlinkIt_BackEnd.order.orderrepo;
 
 import com.CapStone.BlinkIt_BackEnd.order.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;

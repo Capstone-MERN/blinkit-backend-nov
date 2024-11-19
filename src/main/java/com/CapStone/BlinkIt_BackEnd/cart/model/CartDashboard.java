@@ -26,5 +26,4 @@ public class CartDashboard {
     List<CartItemResponse> cartItemResponseList;
 
 
-
 }

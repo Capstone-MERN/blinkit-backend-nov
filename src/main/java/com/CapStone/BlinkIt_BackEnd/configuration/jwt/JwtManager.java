@@ -1,6 +1,6 @@
-package com.CapStone.BlinkIt_BackEnd.auth;
+package com.CapStone.BlinkIt_BackEnd.configuration.jwt;
 
-import com.CapStone.BlinkIt_BackEnd.common.Role;
+import com.CapStone.BlinkIt_BackEnd.auth.UserAuthResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 public class JwtManager {
 
-    private String privateKey = "accio_capstone_blinkit_clone";
+    private final String privateKey = "accio_capstone_blinkit_clone";
 
     public String generateToken(String userId){
         Map<String, Object> claims = new HashMap<>();                   //payload will be stored in this

@@ -1,5 +1,6 @@
 package com.CapStone.BlinkIt_BackEnd.auth;
 
+import com.CapStone.BlinkIt_BackEnd.configuration.jwt.JwtManager;
 import com.CapStone.BlinkIt_BackEnd.user.entity.User;
 import com.CapStone.BlinkIt_BackEnd.user.UserRepository;
 import com.CapStone.BlinkIt_BackEnd.user.model.UserRequest;
