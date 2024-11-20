@@ -18,12 +18,10 @@ public class CartDashboard {
 
     Float grandTotal;
 
-
     Float deliveryCharge;
 
     Float handlingCharge;
 
     List<CartItemResponse> cartItemResponseList;
-
 
 }

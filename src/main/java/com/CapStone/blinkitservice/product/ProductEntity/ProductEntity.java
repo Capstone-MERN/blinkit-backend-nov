@@ -1,8 +1,8 @@
-package com.CapStone.blinkitservice.product;
+package com.CapStone.blinkitservice.product.ProductEntity;
 
 
-import com.CapStone.blinkitservice.brand.BrandEntity;
-import com.CapStone.blinkitservice.subcategory.SubCategoryEntity;
+import com.CapStone.blinkitservice.brand.BrandEntity.BrandEntity;
+import com.CapStone.blinkitservice.subcategory.SubcategryEntity.SubCategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -35,7 +35,7 @@ public class ProductEntity {
     Double discount;
     boolean isAvailable;
     String ingredients;
-    String packeging_type;
+    String packaging_type;
     String key_features;
 
     @ManyToOne
@@ -45,4 +45,5 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn
     BrandEntity brand;
+
 }

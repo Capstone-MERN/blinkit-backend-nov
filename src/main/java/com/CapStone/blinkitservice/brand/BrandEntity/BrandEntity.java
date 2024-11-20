@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.brand;
+package com.CapStone.blinkitservice.brand.BrandEntity;
 
 
 import jakarta.persistence.Entity;
@@ -18,7 +18,6 @@ import lombok.experimental.FieldDefaults;
 public class BrandEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     Integer id;
 
     String logo;

@@ -1,6 +1,6 @@
 package com.CapStone.blinkitservice.order.entity;
 
-import com.CapStone.blinkitservice.product.ProductEntity;
+import com.CapStone.blinkitservice.product.ProductEntity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

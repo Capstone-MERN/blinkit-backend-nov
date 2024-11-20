@@ -1,7 +1,7 @@
-package com.CapStone.blinkitservice.subcategory;
+package com.CapStone.blinkitservice.subcategory.SubcategryEntity;
 
 
-import com.CapStone.blinkitservice.category.CategoryEntity;
+import com.CapStone.blinkitservice.category.CategoryEntity.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

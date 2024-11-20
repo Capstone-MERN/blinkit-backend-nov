@@ -1,7 +1,7 @@
 package com.CapStone.blinkitservice.cart.entity;
 
 
-import com.CapStone.blinkitservice.product.ProductEntity;
+import com.CapStone.blinkitservice.product.ProductEntity.ProductEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
