@@ -15,14 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-@WebFilter("/api/*")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-//    private final JwtManager jwtManager;
-//
-//    public JwtAuthenticationFilter(JwtManager jwtManager) {
-//        this.jwtManager = jwtManager;
-//    }
 
     @Autowired
     JwtManager jwtManager;
@@ -32,17 +25,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = extractToken(request);
 
-        if (token != null && jwtManager.validateToken(token)) {
+        if (token == null && request.getRequestURI().startsWith("/auth/")) {  // skipping filter for public route
+
+            filterChain.doFilter(request, response);  // Continue without authentication
+
+        } else if (token != null && jwtManager.validateToken(token)) {
+
             UserAuthResponse userAuthResponse = jwtManager.getUserInfo(token);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userAuthResponse.getEmail(), null, null);
-                                                                                //to create authentication object
+            //to create authentication token and pass to spring security
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);  // stores logged in / curr session details
-        }
+            SecurityContextHolder.getContext().setAuthentication(authentication);  // stores above token in spring security
+            filterChain.doFilter(request, response);    //to ensure request move to next filter in the security chain
 
-        filterChain.doFilter(request, response);    //to ensure request move to next phase in the chain
+        } else {
+
+            response.setStatus(401);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Invalid token\"}");
+
+        }    //to ensure request move to next phase in the chain
     }
 
     private String extractToken(HttpServletRequest request) {

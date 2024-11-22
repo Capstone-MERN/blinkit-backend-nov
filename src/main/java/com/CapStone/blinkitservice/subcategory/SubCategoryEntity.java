@@ -9,8 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SubCategoryEntity {
@@ -21,9 +20,9 @@ public class SubCategoryEntity {
 
     String title;
 
-    String image_url;
+    String imageUrl;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "category_id",nullable = false)
     CategoryEntity category;
 }

@@ -1,6 +1,5 @@
 package com.CapStone.blinkitservice.user.model;
 
-import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

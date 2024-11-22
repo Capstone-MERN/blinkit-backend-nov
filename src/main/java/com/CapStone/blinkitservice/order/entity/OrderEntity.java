@@ -26,7 +26,7 @@ public class OrderEntity {
     long timestamp;
 
     @Column(name = "total_amount_paid", nullable = false)
-    float totalAmountPaid;
+    Float totalAmountPaid;
 
     @Column(name = "delivery_charge")
     Float deliveryCharge;
@@ -54,7 +54,5 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "address_book_id", nullable = false)
     AddressBookEntity addressBookEntity;
-
-
 
 }

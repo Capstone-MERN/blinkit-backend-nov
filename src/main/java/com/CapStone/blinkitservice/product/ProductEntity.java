@@ -10,8 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ProductEntity {
@@ -20,29 +19,30 @@ public class ProductEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer id;
 
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     String name;
+
     String description;
     String unit;
 
-    @JoinColumn(nullable = false)
-    String image_url;
-    Integer max_order_limit;
+    @Column(nullable = false)
+    String imageUrl;
+    Integer maxOrderLimit;
 
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     Double price;
 
     Double discount;
     boolean isAvailable;
     String ingredients;
-    String packeging_type;
-    String key_features;
+    String packagingType;
+    String keyFeatures;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "sub_category_id", nullable = false)
     SubCategoryEntity subCategory;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "brand_id", nullable = false)
     BrandEntity brand;
 }

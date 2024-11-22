@@ -17,12 +17,12 @@ import lombok.experimental.FieldDefaults;
 public class CartItemEntity {
 
     @Id
-    @Column(name = "cart_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column(name = "quantity")
-    Integer quantity;
+    int quantity;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

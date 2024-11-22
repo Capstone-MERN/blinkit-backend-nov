@@ -17,13 +17,13 @@ public class OrderItemEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Integer id;
 
     @Column(name = "quantity", nullable = false)
     int quantity;
 
     @Column(name = "amount_paid", nullable = false)
-    float amountPaid;
+    Float amountPaid;
 
     @Column(name = "discount")
     Float discount;

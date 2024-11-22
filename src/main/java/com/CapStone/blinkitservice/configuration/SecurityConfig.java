@@ -16,27 +16,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//
-//    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-//        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-//    }
-
     @Autowired
     JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @SuppressWarnings("removal")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/**").authenticated()                       // all other routes will now come under spring security
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // to check JWT nad skips other spring security checks
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // to not save session in session management as JWT - stateless
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // asking JWT to preceed in the filter chain
 
-        return httpSecurity.build();
+        return httpSecurity.build();                                                                    // to build the filter chain
     }
 
     @Bean
