@@ -1,6 +1,6 @@
 package com.CapStone.blinkitservice.configuration.jwt;
 
-import com.CapStone.blinkitservice.auth.UserAuthResponse;
+import com.CapStone.blinkitservice.auth.model.JwtAuthResponse;
 import com.CapStone.blinkitservice.common.StringConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -31,6 +31,7 @@ public class JwtManager {
 
     public boolean validateToken(String token){
         try{
+
             Jwts.parser()
                     .setSigningKey(privateKey)
                     .parseClaimsJwt(token)                             // to decode the token
@@ -41,14 +42,14 @@ public class JwtManager {
         }
     }
 
-    public UserAuthResponse getUserInfo(String token) {
+    public JwtAuthResponse getUserInfo(String token) {
         try {
             Map<String, Object> claims = Jwts.parser()
                     .setSigningKey(privateKey)
                     .parseClaimsJws(token)
                     .getBody();
 
-            return new UserAuthResponse(
+            return new JwtAuthResponse(
                     claims.get(StringConstants.EMAIL).toString()
             );
         } catch (Exception e) {

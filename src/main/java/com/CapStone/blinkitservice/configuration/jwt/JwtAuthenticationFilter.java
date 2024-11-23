@@ -1,9 +1,8 @@
 package com.CapStone.blinkitservice.configuration.jwt;
 
-import com.CapStone.blinkitservice.auth.UserAuthResponse;
+import com.CapStone.blinkitservice.auth.model.JwtAuthResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +25,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = extractToken(request);
 
         if (token == null && request.getRequestURI().startsWith("/auth/")) {  // skipping filter for public API
-
+// TODO: Improve this code
             filterChain.doFilter(request, response);  // Continue without authentication
 
         } else if (token != null && jwtManager.validateToken(token)) {
 
-            UserAuthResponse userAuthResponse = jwtManager.getUserInfo(token);
+            JwtAuthResponse jwtAuthResponse = jwtManager.getUserInfo(token);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userAuthResponse.getEmail(), null, null);
+                    jwtAuthResponse.getEmail(), null, null);
             //to create authentication token and pass to spring security
 
             SecurityContextHolder.getContext().setAuthentication(authentication);  // stores above token in spring security

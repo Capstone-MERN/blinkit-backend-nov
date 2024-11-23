@@ -4,8 +4,6 @@ import com.CapStone.blinkitservice.configuration.jwt.JwtManager;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import com.CapStone.blinkitservice.user.model.UserRequest;
-import com.CapStone.blinkitservice.user.model.UserResponse;
-import com.CapStone.blinkitservice.user.transformer.UserTransformer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +31,19 @@ public class AuthService {
         return null;
     }
 
-    public UserResponse signup(UserRequest userRequest) {
-        UserEntity user = UserTransformer.userRequestToUser(userRequest);
-        UserEntity savedUser = userRepository.save(user);
-        return UserTransformer.userToUserResponse(savedUser);
+    public AuthResponse signup(UserRequest userRequest) {
+
+        UserEntity user = UserEntity.builder()
+                .email(userRequest.getEmail())
+                .mobileNumber(userRequest.getMobileNumber())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .name(userRequest.getName())
+                .build();
+
+            userRepository.save(user);
+
+            return AuthResponse.builder()
+                    .message("Successfully signed up")
+                    .build();
     }
 }
