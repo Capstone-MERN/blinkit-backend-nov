@@ -19,7 +19,7 @@ public class CategoryController {
 
     private  final  CategoryService categoryService;
 
-    @GetMapping("getCategoryList")
+    @GetMapping
     public ResponseEntity<Map<String, List<CategoryResponseDTO>>> getCategories(){
 
         List<CategoryResponseDTO> categories  = categoryService.getCategories();
