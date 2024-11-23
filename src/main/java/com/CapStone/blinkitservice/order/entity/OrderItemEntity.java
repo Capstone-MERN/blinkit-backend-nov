@@ -1,6 +1,6 @@
 package com.CapStone.blinkitservice.order.entity;
 
-import com.CapStone.blinkitservice.product.ProductEntity;
+import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +17,7 @@ public class OrderItemEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    int id;
 
     @Column(name = "quantity", nullable = false)
     int quantity;

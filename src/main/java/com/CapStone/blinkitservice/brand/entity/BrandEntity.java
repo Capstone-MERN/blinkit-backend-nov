@@ -1,24 +1,27 @@
-package com.CapStone.blinkitservice.category;
+package com.CapStone.blinkitservice.brand.entity;
+
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
+@Table(name="brands")
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Data
-@Builder
-public class CategoryEntity {
+public class BrandEntity {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    int id;
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false, unique = true)
     String title;
 
-    @Column(nullable = false)
-    String imageUrl;
+    @Column(name = "logo_url")
+    String logoUrl;
 }

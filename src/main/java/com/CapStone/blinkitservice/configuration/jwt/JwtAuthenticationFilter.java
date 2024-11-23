@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = extractToken(request);
 
-        if (token == null && request.getRequestURI().startsWith("/auth/")) {  // skipping filter for public route
+        if (token == null && request.getRequestURI().startsWith("/auth/")) {  // skipping filter for public API
 
             filterChain.doFilter(request, response);  // Continue without authentication
 
@@ -44,16 +44,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             response.setStatus(401);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Invalid token\"}");
+            response.getWriter().write("{\"Error\": \"Sorry, Invalid token\"}");
 
-        }    //to ensure request move to next phase in the chain
+        }
+
+
     }
 
     private String extractToken(HttpServletRequest request) {
+
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
         return null;
+
     }
 }
