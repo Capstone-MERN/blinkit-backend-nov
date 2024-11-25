@@ -7,7 +7,8 @@ public class CategoryResponseDTO {
     private Integer categoryId;
     private String imageUrl;
     private String title;
-    private Integer defaultSubcategory;
+    private Integer defaultSubcategoryId;
+    private String defaultSubcategoryTitle;
 
 }
 
