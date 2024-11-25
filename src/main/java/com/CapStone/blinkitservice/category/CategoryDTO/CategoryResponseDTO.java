@@ -11,7 +11,7 @@ public class CategoryResponseDTO {
     private Integer categoryId;
     private String imageUrl;
     private String title;
-    private DefaultSubcategoryDTO defaultSubcategory;
+    private Integer defaultSubcategory;
 
 }
 

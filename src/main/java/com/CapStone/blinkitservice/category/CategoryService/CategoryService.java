@@ -8,8 +8,8 @@ import com.CapStone.blinkitservice.subcategory.SubcategryEntity.SubCategoryEntit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,20 +19,42 @@ public class CategoryService {
 
     public List<CategoryResponseDTO> getCategories() {
 
-        List<CategoryEntity> categories = categoryRepository.findAllWithSubcategories();
+        List<CategoryEntity> categories = categoryRepository.findAll();
+        List<CategoryResponseDTO> list = new ArrayList<>();
+        Integer defaultCategory =  null;
+        for(CategoryEntity key : categories){
+            SubCategoryEntity firstSubcategory =  key.getSubCategoryEntities().get(0);
+            defaultCategory =  firstSubcategory.getId();
 
-        return  categories.stream().map( categoryEntity -> {
-            DefaultSubcategoryDTO defaultSubcategory = null;
-            if (categoryEntity.getSubCategoryEntities() != null && !categoryEntity.getSubCategoryEntities().isEmpty()){
-                SubCategoryEntity firstSubcategory = categoryEntity.getSubCategoryEntities().get(0);
-                defaultSubcategory.setId(firstSubcategory.getId());
-            }
-            return new CategoryResponseDTO(
-                    categoryEntity.getId(),
-                    categoryEntity.getImage_url(),
-                    categoryEntity.getTitle(),
-                    defaultSubcategory
-            );
-        }).collect(Collectors.toList());
+            // set the value to the response dto
+            CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
+            categoryResponseDTO.setCategoryId(key.getId());
+            categoryResponseDTO.setTitle(key.getTitle());
+            categoryResponseDTO.setImageUrl(key.getImage_url());
+            categoryResponseDTO.setDefaultSubcategory(defaultCategory);
+
+            list.add(categoryResponseDTO);
+        }
+
+        return  list;
+
+//        return  categories.stream().map( categoryEntity -> {
+//            DefaultSubcategoryDTO defaultSubcategory = null;
+//            if (categoryEntity.getSubCategoryEntities() != null && !categoryEntity.getSubCategoryEntities().isEmpty()){
+//                SubCategoryEntity firstSubcategory = categoryEntity.getSubCategoryEntities().get(0);
+//                defaultSubcategory.setId(firstSubcategory.getId());//firstSubcategory.getId()
+//            }
+//           return new CategoryResponseDTO(
+//                    categoryEntity.getId(),
+//                    categoryEntity.getImage_url(),
+//                    categoryEntity.getTitle(),
+//                    defaultSubcategory
+//            );
+//        }).collect(Collectors.toList());
+    }
+
+    public String addCategory(CategoryEntity categoryEntity) {
+        categoryRepository.save(categoryEntity);
+        return  "category is added";
     }
 }

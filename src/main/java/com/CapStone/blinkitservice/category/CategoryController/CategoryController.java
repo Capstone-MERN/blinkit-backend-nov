@@ -1,34 +1,39 @@
 package com.CapStone.blinkitservice.category.CategoryController;
 
 import com.CapStone.blinkitservice.category.CategoryDTO.CategoryResponseDTO;
+import com.CapStone.blinkitservice.category.CategoryEntity.CategoryEntity;
 import com.CapStone.blinkitservice.category.CategoryService.CategoryService;
+import com.CapStone.blinkitservice.subcategory.SubcategryEntity.SubCategoryEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("category/v1")
+@RequestMapping("api/auth/category/v1")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private  final  CategoryService categoryService;
 
+
     @GetMapping
-    public ResponseEntity<Map<String, List<CategoryResponseDTO>>> getCategories(){
+    public List<CategoryResponseDTO> getCategories(){
 
-        List<CategoryResponseDTO> categories  = categoryService.getCategories();
-        Map<String , List<CategoryResponseDTO>> response = new HashMap<>();
+       List<CategoryResponseDTO> response = categoryService.getCategories();
 
-        response.put("Categories" , categories);
-
-        return  ResponseEntity.ok(response);
+        return  response;
     }
+
+    @PostMapping
+    public String addCategory(@RequestBody CategoryEntity categoryEntity){
+        return  categoryService.addCategory(categoryEntity);
+    }
+
 
     @GetMapping("/check")
     public  String check(){

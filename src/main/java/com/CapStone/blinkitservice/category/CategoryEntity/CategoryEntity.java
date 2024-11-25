@@ -9,11 +9,13 @@ import javax.net.ssl.SSLSession;
 import java.util.List;
 
 @Entity
-@Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
+@Table(name = "categories")
 public class CategoryEntity {
 
     @Id

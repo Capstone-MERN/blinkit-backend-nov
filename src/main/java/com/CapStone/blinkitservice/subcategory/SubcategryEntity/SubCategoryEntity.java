@@ -24,6 +24,6 @@ public class SubCategoryEntity {
     String image_url;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "category_id", nullable = false)
     CategoryEntity category;
 }
