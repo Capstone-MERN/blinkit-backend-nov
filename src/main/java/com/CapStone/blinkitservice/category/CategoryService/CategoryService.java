@@ -22,10 +22,8 @@ public class CategoryService {
         List<CategoryResponseDTO> list = new ArrayList<>();
         Integer defaultCategory =  null;
         for(CategoryEntity key : categories){
-            SubCategoryEntity firstSubcategory =  key.getSubCategoryEntities().get(0);
-            defaultCategory =  firstSubcategory.getId();
+            defaultCategory =  key.getSubCategoryEntities().get(0).getId();
 
-            // set the value to the response dto
             CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
             categoryResponseDTO.setCategoryId(key.getId());
             categoryResponseDTO.setTitle(key.getTitle());
