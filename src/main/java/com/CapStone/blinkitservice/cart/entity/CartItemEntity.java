@@ -1,6 +1,7 @@
-package com.CapStone.blinkitservice.cart;
+package com.CapStone.blinkitservice.cart.entity;
 
 
+import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,13 +22,13 @@ public class CartItemEntity {
     int id;
 
     @Column(name = "quantity")
-    Integer quantity;
+    int quantity;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     UserEntity userEntity;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id", nullable = false)
-//    Product product
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    ProductEntity productEntity;
 }

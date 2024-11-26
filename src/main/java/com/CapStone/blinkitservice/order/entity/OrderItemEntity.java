@@ -1,5 +1,6 @@
 package com.CapStone.blinkitservice.order.entity;
 
+import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +23,7 @@ public class OrderItemEntity {
     int quantity;
 
     @Column(name = "amount_paid", nullable = false)
-    float amountPaid;
+    Float amountPaid;
 
     @Column(name = "discount")
     Float discount;
@@ -31,7 +32,7 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id", nullable = false)
     OrderEntity orderEntity;
 
-    //@ManyToOne
-    //@JoinColumn(name = "product_id", nullable = false)
-    //Product product
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    ProductEntity productEntity;
 }
