@@ -2,7 +2,7 @@ package com.CapStone.blinkitservice.product.entity;
 
 
 import com.CapStone.blinkitservice.brand.entity.BrandEntity;
-import com.CapStone.blinkitservice.subcategory.entity.SubCategoryEntity;
+import com.CapStone.blinkitservice.category.CategoryEntity.SubCategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
