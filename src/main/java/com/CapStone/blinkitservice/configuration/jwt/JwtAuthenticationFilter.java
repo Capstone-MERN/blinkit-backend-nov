@@ -30,13 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } else if (token != null && jwtManager.validateToken(token)) {
 
-            JwtAuthResponse jwtAuthResponse = jwtManager.getUserInfo(token);
+           JwtAuthResponse jwtAuthResponse = jwtManager.getUserInfo(token);
+
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     jwtAuthResponse.getEmail(), null, null);
-            //to create authentication token and pass to spring security
+               SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);  // stores above token in spring security
             filterChain.doFilter(request, response);    //to ensure request move to next filter in the security chain
 
         } else {

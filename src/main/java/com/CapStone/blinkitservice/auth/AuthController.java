@@ -2,9 +2,7 @@ package com.CapStone.blinkitservice.auth;
 
 import com.CapStone.blinkitservice.user.model.UserRequest;
 import jakarta.validation.Valid;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +11,22 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-
 
 @RestController
-@RequestMapping("/auth")
+//@RequestMapping("/auth")
 @Validated
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
+    @GetMapping("/api/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Now Authorized");
+    }
 
-    @PostMapping("/signin")
+
+    @PostMapping("/auth/signin")
     public ResponseEntity<String> signIn(@RequestBody AuthRequest authRequest) {
 
         String response = authService.authenticate(authRequest);
@@ -36,7 +37,6 @@ public class AuthController {
 
         return ResponseEntity.ok("Bearer " + response);
     }
-
 
 
     @PostMapping("/signup")
