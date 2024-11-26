@@ -4,8 +4,6 @@ import com.CapStone.blinkitservice.configuration.jwt.JwtManager;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import com.CapStone.blinkitservice.user.model.UserRequest;
-import com.CapStone.blinkitservice.user.model.UserResponse;
-import com.CapStone.blinkitservice.user.transformer.UserTransformer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +20,10 @@ public class AuthService {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    public String authenticate(String email, String password) {
-        UserEntity user = userRepository.findByEmail(email);
+    public String authenticate(AuthRequest authRequest) {
+        UserEntity user = userRepository.findByEmail(authRequest.getEmail());
 
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+        if (user != null && passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
             String token = jwtManager.generateToken(user.getEmail());
             return token;
         }
@@ -33,9 +31,19 @@ public class AuthService {
         return null;
     }
 
-    public UserResponse signup(UserRequest userRequest) {
-        UserEntity user = UserTransformer.userRequestToUser(userRequest);
-        UserEntity savedUser = userRepository.save(user);
-        return UserTransformer.userToUserResponse(savedUser);
+    public AuthResponse signup(UserRequest userRequest) {
+
+        UserEntity user = UserEntity.builder()
+                .email(userRequest.getEmail())
+                .mobileNumber(userRequest.getMobileNumber())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .name(userRequest.getName())
+                .build();
+
+            userRepository.save(user);
+
+            return AuthResponse.builder()
+                    .message("Successfully signed up")
+                    .build();
     }
 }

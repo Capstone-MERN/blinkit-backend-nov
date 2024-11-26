@@ -1,13 +1,13 @@
-package com.CapStone.blinkitservice.cart.model;
+package com.CapStone.blinkitservice.auth.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItemRequest {
-
-    Integer quantity;
+public class JwtAuthResponse {
+    String email;
 }
