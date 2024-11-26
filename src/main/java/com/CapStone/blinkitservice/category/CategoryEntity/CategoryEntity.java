@@ -8,13 +8,9 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 
+@Data
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
 @Table(name = "categories")
 public class CategoryEntity {
 
@@ -22,10 +18,10 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     String title;
 
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     String image_url;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

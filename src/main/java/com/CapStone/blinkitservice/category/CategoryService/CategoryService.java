@@ -20,17 +20,16 @@ public class CategoryService {
 
         List<CategoryEntity> categories = categoryRepository.findAll();
         List<CategoryResponseDTO> list = new ArrayList<>();
-        Integer defaultCategory =  null;
+        Integer defaultCategoryId =  null;
         for(CategoryEntity key : categories){
-            SubCategoryEntity firstSubcategory =  key.getSubCategoryEntities().get(0);
-            defaultCategory =  firstSubcategory.getId();
+            defaultCategoryId =  key.getSubCategoryEntities().get(0).getId();
 
-            // set the value to the response dto
             CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
             categoryResponseDTO.setCategoryId(key.getId());
             categoryResponseDTO.setTitle(key.getTitle());
             categoryResponseDTO.setImageUrl(key.getImage_url());
-            categoryResponseDTO.setDefaultSubcategory(defaultCategory);
+            categoryResponseDTO.setDefaultSubcategoryId(defaultCategoryId);
+            categoryResponseDTO.setDefaultSubcategoryTitle(key.getSubCategoryEntities().get(0).getTitle());
 
             list.add(categoryResponseDTO);
         }
