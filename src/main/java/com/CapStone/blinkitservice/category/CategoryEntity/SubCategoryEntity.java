@@ -1,17 +1,18 @@
-package com.CapStone.blinkitservice.category.entity;
+package com.CapStone.blinkitservice.category.CategoryEntity;
 
+import com.CapStone.blinkitservice.category.CategoryEntity.CategoryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name="categories")
+@Table(name="sub_categories")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryEntity {
+public class SubCategoryEntity {
 
     @Id
     @Column(name = "id")
@@ -23,4 +24,8 @@ public class CategoryEntity {
 
     @Column(name = "image_url")
     String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    CategoryEntity categoryEntity;
 }
