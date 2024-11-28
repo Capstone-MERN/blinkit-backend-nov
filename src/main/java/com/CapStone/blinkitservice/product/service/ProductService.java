@@ -44,6 +44,7 @@ public class ProductService {
         productSearchResponse.setSize(products.getSize());
         productSearchResponse.setTotalPageNumber(products.getTotalPages());
         productSearchResponse.setPageNumber(products.getNumber());
+        productSearchResponse.setCount(products.getTotalElements());
 
         return productSearchResponse;
     }
