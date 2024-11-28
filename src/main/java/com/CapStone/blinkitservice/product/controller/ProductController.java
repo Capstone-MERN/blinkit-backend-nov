@@ -25,7 +25,7 @@ public class ProductController {
 
         ProductSearchResponseDto productSearchResponseDto = null;
         if(productSearchRequestDto.getQuery() != null){
-            productSearchResponseDto = productService.querySearch(productSearchRequestDto.getQuery());
+            productSearchResponseDto = productService.querySearch(productSearchRequestDto.getQuery(), pageable);
         }else {
             productSearchResponseDto = productService.categorySearch(productSearchRequestDto.getCategoryId(),
                     productSearchRequestDto.getSubCategoryId(), productSearchRequestDto.getFilter());
