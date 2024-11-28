@@ -13,20 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-//@RequestMapping("/auth")
+@RequestMapping("/auth")
 @Validated
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
-    @GetMapping("/api/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Now Authorized");
-    }
-
-
-    @PostMapping("/auth/signin")
+    @PostMapping("/signin")
     public ResponseEntity<String> signIn(@RequestBody AuthRequest authRequest) {
 
         String response = authService.authenticate(authRequest);
