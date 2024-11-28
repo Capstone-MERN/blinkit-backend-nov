@@ -15,5 +15,5 @@ public class ProductResponseDto {
     Integer quantity;
     String description;
     Double discountPercent;
-    Double orginalPrice;
+    Double originalPrice;
 }
