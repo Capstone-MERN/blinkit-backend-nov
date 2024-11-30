@@ -19,7 +19,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    //TODO - ayush
     public ProductSearchResponseDto querySearch(String query, Pageable pageable){
 
         Page<ProductEntity> products = productRepository.findAllProductsByQuery(query, pageable);
@@ -50,11 +49,33 @@ public class ProductService {
     }
 
 
-    //TODO - vishal
-    public ProductSearchResponseDto categorySearch(Integer categoryId, Integer subCategoryId, SearchFilters filter){
+    public ProductSearchResponseDto categorySearch(Integer categoryId, Integer subCategoryId, SearchFilters filter, Pageable pageable){
 
+        Page<ProductEntity> products = productRepository.findAllProductsByFilter(subCategoryId, filter.name(), pageable);
 
+        ProductSearchResponseDto productSearchResponse = new ProductSearchResponseDto();
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+        for(ProductEntity product : products.getContent()){
+            ProductResponseDto responseDto = new ProductResponseDto();
+            responseDto.setTitle(product.getName());
+            responseDto.setPrice(product.getPrice());
+            responseDto.setImageUrl(product.getImageUrl());
+            responseDto.setMaxQuantity(product.getMaxOrderLimit());
+            responseDto.setQuantity(0);
+            responseDto.setDescription(product.getDescription());
+            responseDto.setDiscountPercent(product.getDiscount());
+            responseDto.setOrginalPrice(product.getPrice());
 
+            productResponseDtoList.add(responseDto);
+        }
+
+        productSearchResponse.setProducts(productResponseDtoList);
+        productSearchResponse.setSize(products.getSize());
+        productSearchResponse.setTotalPageNumber(products.getTotalPages());
+        productSearchResponse.setPageNumber(products.getNumber());
+        productSearchResponse.setCount(products.getTotalElements());
+
+        return productSearchResponse;
 
     }
 
