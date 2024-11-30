@@ -1,8 +1,6 @@
 package com.CapStone.blinkitservice.product.repository;
 
-import com.CapStone.blinkitservice.product.dto.ProductResponseDto;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
-import com.CapStone.blinkitservice.product.enums.SearchFilters;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
