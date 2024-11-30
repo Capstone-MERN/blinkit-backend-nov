@@ -32,48 +32,48 @@ public class CartService {
     public UpdateCartResponse updateCart(UpdateCartRequest updateCartRequest, String userEmail) {
 
         UserEntity user = userRepository.findByEmail(userEmail);
-        List<CartRequest> items = updateCartRequest.getItems();
 
         //to update in database, adding all existing products of user in cart to hashset
         List<CartItemEntity> cartItemOfUser = cartRepository.findByUserEntity(user);
-        HashSet<Integer> set = new HashSet<>();
-        for(CartItemEntity item : cartItemOfUser)
-            set.add(item.getProductEntity().getId());
 
+        if(cartItemOfUser.isEmpty()) {
+            //throw new InvalidRequestFormatException
+        }
+
+        HashSet<Integer> backendProductIds = new HashSet<>();
+        for (CartItemEntity item : cartItemOfUser) {
+            backendProductIds.add(item.getProductEntity().getId());
+        }
+
+        List<CartRequest> requestProductIds = updateCartRequest.getItems();
+
+        for(CartRequest cartRequest : requestProductIds){
+           if(!backendProductIds.contains(cartRequest.getProductId())){
+               // throw new ProductIdNotExistException
+           }
+        }
 
         //initializing empty values for response
         List<UpdateCartProductResponse> productResponses = new ArrayList<>();
         Float totalWithoutDiscount = Float.valueOf(0.0f);
-        Float handlingCharges = Float.valueOf(0.0f);
-        Float deliveryCharges = Float.valueOf(0.0f);
+//        Float handlingCharges = Float.valueOf(0.0f);
         Float grandTotal = Float.valueOf(0.0f);
         int uniqueQuantity = 0;
         int totalQuantity = 0;
 
 
-        for(CartRequest cartRequest : items) {
+        for(CartRequest cartRequest : requestProductIds) {
             Optional<ProductEntity> productEntityOptional = productRepository.findById(cartRequest.getProductId());
-
-            if(productEntityOptional.isEmpty()){
-                //***************************** handle with custom exception
-            }
 
             ProductEntity productEntity = productEntityOptional.get();
 
 
             //******* To Update in Database
-            if(set.contains(productEntity.getId())){
                 CartItemEntity cartItem = cartRepository.findByUserEntityAndProductEntity(user,productEntity);
                 cartItem.setQuantity(cartRequest.getQuantity());
                 cartRepository.save(cartItem);
-                set.remove(cartItem.getProductEntity().getId());
-            } else {
-                cartRepository.save(CartItemEntity.builder()
-                        .userEntity(user)
-                        .productEntity(productEntity)
-                        .quantity(cartRequest.getQuantity())
-                        .build());
-            }
+                backendProductIds.remove(cartItem.getProductEntity().getId());
+
 
 
             Double discountApplied = 0.0;
@@ -103,7 +103,7 @@ public class CartService {
         }
 
         //******* To Remove from Database, which was removed from cart
-        for(int productId : set){
+        for(int productId : backendProductIds){
             CartItemEntity toDelete = cartRepository.findByProductIdAndUserId(productId, user.getId());
             cartRepository.delete(toDelete);
         }
@@ -113,8 +113,7 @@ public class CartService {
                 .products(productResponses)
                 .totalWithoutDiscount(totalWithoutDiscount)
                 .grandTotal(grandTotal)
-                .deliveryCharges(grandTotal > 99.0f ? 0.0f : 25.0f)
-                .handlingCharges(4.0f)
+//                .handlingCharges(4.0f)
                 .uniqueQuantity(uniqueQuantity)
                 .totalQuantity(totalQuantity)
                 .build();

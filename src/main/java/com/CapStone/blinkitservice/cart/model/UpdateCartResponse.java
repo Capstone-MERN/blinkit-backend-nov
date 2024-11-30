@@ -17,9 +17,7 @@ public class UpdateCartResponse {
 
     Float totalWithoutDiscount;
 
-    Float handlingCharges;
-
-    Float deliveryCharges;
+//    Float handlingCharges;
 
     Float grandTotal;
 
