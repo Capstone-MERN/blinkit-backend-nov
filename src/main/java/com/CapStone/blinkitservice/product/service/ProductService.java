@@ -34,7 +34,7 @@ public class ProductService {
             responseDto.setQuantity(0);
             responseDto.setDescription(product.getDescription());
             responseDto.setDiscountPercent(product.getDiscount());
-            responseDto.setOrginalPrice(product.getPrice());
+            responseDto.setOriginalPrice(product.getPrice());
 
             productResponseDtoList.add(responseDto);
         }
