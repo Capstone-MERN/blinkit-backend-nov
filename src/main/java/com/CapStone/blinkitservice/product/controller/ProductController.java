@@ -21,18 +21,14 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/search")
-    public ResponseEntity<Object> searchProducts(Pageable pageable, @RequestBody ProductSearchRequestDto productSearchRequestDto){
+    public ResponseEntity<ProductSearchResponseDto> searchProducts(Pageable pageable, @RequestBody ProductSearchRequestDto productSearchRequestDto){
 
-        ProductSearchResponseDto productSearchResponseDto = null;
+        ProductSearchResponseDto productSearchResponseDto;
         if(productSearchRequestDto.getQuery() != null){
             productSearchResponseDto = productService.querySearch(productSearchRequestDto.getQuery(), pageable);
         }else {
             productSearchResponseDto = productService.categorySearch(productSearchRequestDto.getCategoryId(),
                     productSearchRequestDto.getSubCategoryId(), productSearchRequestDto.getFilter(), pageable);
-        }
-
-        if(productSearchResponseDto.getCount() == 0){
-            return new ResponseEntity<>("Data error", HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(productSearchResponseDto, HttpStatus.OK);
