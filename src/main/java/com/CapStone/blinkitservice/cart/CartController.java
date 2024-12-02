@@ -21,11 +21,12 @@ public class CartController {
     @GetMapping("/update")
     public ResponseEntity<UpdateCartResponse> updateCart(UpdateCartRequest updateCartRequest, @AuthenticationPrincipal JwtAuthResponse jwtAuthResponse){
 
-            UpdateCartResponse response = cartService.updateCart(updateCartRequest, jwtAuthResponse.getEmail());
-            return new ResponseEntity<UpdateCartResponse>(response, HttpStatus.OK);
-
-//        catch (Exception e){
-//            return new ResponseEntity<UpdateCartResponse>("Error - ", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        try{
+             UpdateCartResponse response = cartService.updateCartDemo(updateCartRequest, jwtAuthResponse.getEmail());
+             return new ResponseEntity<UpdateCartResponse>(response, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<UpdateCartResponse>(new UpdateCartResponse(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
