@@ -15,20 +15,20 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductTransformer productTransformer;
+
 
 
     public ProductSearchResponseDto querySearch(String query, Pageable pageable){
 
         Page<ProductEntity> products = productRepository.findAllProductsByQuery(query, pageable);
-        return productTransformer.createProductSearchResponse(products);
+        return ProductTransformer.createProductSearchResponse(products);
     }
 
     public ProductSearchResponseDto categorySearch(Integer categoryId, Integer subCategoryId, SearchFilters filter, Pageable pageable){
 
         Page<ProductEntity> products = productRepository.findAllProductsByFilter(subCategoryId, filter.name(), pageable);
 
-        return productTransformer.createProductSearchResponse(products);
+        return ProductTransformer.createProductSearchResponse(products);
 
     }
 

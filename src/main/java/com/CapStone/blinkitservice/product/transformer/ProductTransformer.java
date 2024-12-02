@@ -4,15 +4,13 @@ import com.CapStone.blinkitservice.product.dto.ProductResponseDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class ProductTransformer {
 
-    public List<ProductResponseDto> productToProductResponse(Page<ProductEntity> products) {
+    public static List<ProductResponseDto> productToProductResponse(Page<ProductEntity> products) {
 
         return products.getContent().stream()
                 .map(product -> ProductResponseDto.builder()
@@ -29,7 +27,7 @@ public class ProductTransformer {
                 .collect(Collectors.toList());
     }
 
-    public ProductSearchResponseDto createProductSearchResponse(Page<ProductEntity> products){
+    public static ProductSearchResponseDto createProductSearchResponse(Page<ProductEntity> products){
 
         return ProductSearchResponseDto.builder()
                 .products(productToProductResponse(products))
