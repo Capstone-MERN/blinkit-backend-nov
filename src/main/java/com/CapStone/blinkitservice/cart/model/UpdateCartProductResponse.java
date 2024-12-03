@@ -25,8 +25,6 @@ public class UpdateCartProductResponse {
 
     String description;
 
-    String unit;
-
     int quantity;
 
     boolean isAvailable;

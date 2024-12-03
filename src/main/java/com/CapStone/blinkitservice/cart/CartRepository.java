@@ -14,12 +14,7 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<CartItemEntity, Integer> {
 
-    public CartItemEntity findByUserEntityAndProductEntity (UserEntity userEntity, ProductEntity productEntity);
-
     public List<CartItemEntity> findByUserEntity (UserEntity userEntity);
-
-    @Query(value = "select * from cart_items where user_id =:userId and product_id =:productId",nativeQuery = true)
-    public CartItemEntity findByProductIdAndUserId(int productId, int userId);
 
     @Modifying
     @Query(value = "DELETE FROM cart_items WHERE user_id = :userId AND product_id NOT IN (:productIds)", nativeQuery = true)

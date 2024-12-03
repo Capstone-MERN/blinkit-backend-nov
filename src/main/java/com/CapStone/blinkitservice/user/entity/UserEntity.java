@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
-
-
 @Entity
-@Table(name="users")
+@Table(name="users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email", name = "unique_email_field"),
+        @UniqueConstraint(columnNames = "mobile_number", name = "unique_mobile_number_field")
+})
 @Data
 @Builder
 @AllArgsConstructor

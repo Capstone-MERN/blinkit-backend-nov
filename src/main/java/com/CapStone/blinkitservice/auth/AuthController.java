@@ -43,9 +43,9 @@ public class AuthController {
         } catch (DataIntegrityViolationException e) {
             String duplicateField = "";
 
-            if (e.getMessage().contains("UK6dotkott2kjsp8vw4d0m25fb7")) {
+            if (e.getMessage().contains("unique_email_field")) {
                 duplicateField += "email already exist. ";
-            } else if (e.getMessage().contains("UKr7c96a004bv8w16jgdm8imich")) {
+            } else if (e.getMessage().contains("unique_mobile_number_field")) {
                 duplicateField += "mobile number already exist.";
             } else {
                 duplicateField += "details already exist.";
