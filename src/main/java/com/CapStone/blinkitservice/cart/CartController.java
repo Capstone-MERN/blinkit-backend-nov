@@ -1,8 +1,10 @@
 package com.CapStone.blinkitservice.cart;
 
-import com.CapStone.blinkitservice.auth.model.JwtAuthResponse;
 import com.CapStone.blinkitservice.cart.model.UpdateCartRequest;
 import com.CapStone.blinkitservice.cart.model.UpdateCartResponse;
+import com.CapStone.blinkitservice.common.error.GenericErrorResponse;
+import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResponse;
+import com.CapStone.blinkitservice.common.response.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,17 @@ public class CartController {
     CartService cartService;
 
     @GetMapping("/update")
-    public ResponseEntity<UpdateCartResponse> updateCart(@RequestBody UpdateCartRequest updateCartRequest, @AuthenticationPrincipal String email){
+    public ResponseEntity<GenericResponse> updateCart(@RequestBody UpdateCartRequest updateCartRequest, @AuthenticationPrincipal String email){
 
         try{
              UpdateCartResponse response = cartService.updateCartDemo(updateCartRequest, email);
-             return new ResponseEntity<UpdateCartResponse>(response, HttpStatus.OK);
+             return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (InvalidCartPayloadResponse e){
+            return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
         }
         catch (Exception e){
-            return new ResponseEntity<UpdateCartResponse>(new UpdateCartResponse(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new GenericErrorResponse<>(e),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

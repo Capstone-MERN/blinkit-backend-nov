@@ -1,6 +1,7 @@
 package com.CapStone.blinkitservice.cart.model;
 
 
+import com.CapStone.blinkitservice.common.response.GenericResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateCartResponse {
+public class UpdateCartResponse implements GenericResponse {
 
     List<UpdateCartProductResponse> products;
 
