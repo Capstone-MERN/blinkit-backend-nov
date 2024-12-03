@@ -38,7 +38,11 @@ public class CartService {
 
         UserEntity user = userRepository.findByEmail(userEmail);
 
-        cartRepository.deleteInvalidProductsByUserIdAndProductIds(user.getId(),productIds);
+        if(productIds.isEmpty()){
+            cartRepository.deleteAllByUserId(user.getId());
+        } else {
+            cartRepository.deleteInvalidProductsByUserIdAndProductIds(user.getId(), productIds);
+        }
 
         List<CartItemEntity> cartItemOfUser = cartRepository.findByUserEntity(user);
 
@@ -110,8 +114,8 @@ public class CartService {
                     .isAvailable(productEntity.isAvailable())
                     .build();
 
-            totalWithoutDiscount += productEntity.getPrice().floatValue();
-            grandTotal += productResponse.getDiscountedPrice().floatValue();
+            totalWithoutDiscount += productEntity.getPrice().floatValue()*cartItem.getQuantity();
+            grandTotal += productResponse.getDiscountedPrice().floatValue()*cartItem.getQuantity();
             uniqueQuantity += 1;
             totalQuantity += cartItem.getQuantity();
             productResponses.add(productResponse);
