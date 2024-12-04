@@ -1,20 +1,13 @@
 package com.CapStone.blinkitservice.common.error.exception;
 
-import lombok.Builder;
-import lombok.Data;
+public class InvalidCartPayloadResponse extends RuntimeException {
 
-@Builder
-@Data
-public class InvalidCartPayloadResponse extends Throwable {
-
-    String message;
-
-    public InvalidCartPayloadResponse(){
-        this.message="Invalid Cart Payload";
+    public InvalidCartPayloadResponse() {
+        super("Invalid Cart Payload");
     }
 
-    public InvalidCartPayloadResponse(String message){
-       this.message=message;
+    public InvalidCartPayloadResponse(String message) {
+        super(message);
     }
 
 }

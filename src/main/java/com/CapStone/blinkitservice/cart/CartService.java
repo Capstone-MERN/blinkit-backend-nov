@@ -66,10 +66,10 @@ public class CartService {
         List<Integer> pIds=new ArrayList<>();
         for (CartRequest cartRequest:items){
             if(cartRequest.getQuantity()<=0){
-                throw new InvalidCartPayloadResponse("The given quantity is less than zero for productId "+cartRequest.getProductId());
+                throw new InvalidCartPayloadResponse("The given quantity is less than one for productId " + cartRequest.getProductId());
             }
             if(pIds.contains(cartRequest.getProductId())){
-                throw new InvalidCartPayloadResponse("ProductId "+cartRequest.getProductId()+" is Duplicated");
+                throw new InvalidCartPayloadResponse("ProductId " + cartRequest.getProductId() + " is Duplicated");
             }
             pIds.add(cartRequest.getProductId());
         }
@@ -80,18 +80,18 @@ public class CartService {
 
         for(CartRequest cartRequest:requestList){
 
-            Optional<CartItemEntity> cartResult=cartItemOfUser.stream()
+            Optional<CartItemEntity> cartResult = cartItemOfUser.stream()
                     .filter(cart->cart.getProductEntity().getId()==cartRequest.getProductId()).findFirst();
 
-            Optional<ProductEntity> productResult=productRepository.findById(cartRequest.getProductId());
+            Optional<ProductEntity> productResult = productRepository.findById(cartRequest.getProductId());
             if(productResult.isEmpty()){
-                throw new InvalidCartPayloadResponse("productId "+cartRequest.getProductId()+" does not exist");
+                throw new InvalidCartPayloadResponse("productId "+ cartRequest.getProductId() +" does not exist");
             }
 
-            ProductEntity productEntity=productResult.get();
+            ProductEntity productEntity = productResult.get();
 
-            if(productEntity.getMaxOrderLimit()<cartRequest.getQuantity()){
-                throw new InvalidCartPayloadResponse("The given quantity is exceeding maximum limit for productId "+cartRequest.getProductId());
+            if(productEntity.getMaxOrderLimit() < cartRequest.getQuantity()){
+                throw new InvalidCartPayloadResponse("The given quantity is exceeding maximum limit for productId "+ cartRequest.getProductId());
             }
             if(cartResult.isPresent()){
                 CartItemEntity cartItem=cartResult.get();

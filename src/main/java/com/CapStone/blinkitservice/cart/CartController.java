@@ -27,12 +27,10 @@ public class CartController {
         try{
              UpdateCartResponse response = cartService.updateCartDemo(updateCartRequest, email);
              return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        catch (InvalidCartPayloadResponse e){
+        } catch (InvalidCartPayloadResponse e){
             return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(new GenericErrorResponse<>(e),HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
