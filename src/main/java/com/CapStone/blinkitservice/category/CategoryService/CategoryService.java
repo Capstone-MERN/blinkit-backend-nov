@@ -21,10 +21,15 @@ public class CategoryService {
 
         List<CategoryEntity> categories = categoryRepository.findAll();
         List<CategoryResponseDTO> list = new ArrayList<>();
-        Integer defaultCategory =  null;
+
         for(CategoryEntity key : categories){
-            SubCategoryEntity firstSubcategory =  key.getSubCategoryEntities().get(0);
-            defaultCategory =  firstSubcategory.getId();
+
+            SubCategoryEntity firstSubcategory = new SubCategoryEntity();
+
+            // checking if there is the subcategory exist or not for the category entity
+            if(!key.getSubCategoryEntities().isEmpty()){
+                firstSubcategory =  key.getSubCategoryEntities().get(0);
+            }
 
             // set the value to the response dto
             CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
@@ -32,9 +37,15 @@ public class CategoryService {
             categoryResponseDTO.setTitle(key.getTitle());
             categoryResponseDTO.setImageUrl(key.getImage_url());
 
+            // creating the default subcategory and setting the value
             DefaultSubcategoryDTO  firstDefaultSubcategory = new DefaultSubcategoryDTO();
-            firstDefaultSubcategory.setId(defaultCategory);
-            firstDefaultSubcategory.setTitle(firstSubcategory.getTitle());
+            if (firstSubcategory != null) {
+                firstDefaultSubcategory.setId(firstSubcategory.getId());
+                firstDefaultSubcategory.setTitle(firstSubcategory.getTitle());
+            } else {
+                firstDefaultSubcategory.setId(null);
+                firstDefaultSubcategory.setTitle(null);
+            }
 
             categoryResponseDTO.setDefaultSubcategory(firstDefaultSubcategory);
             list.add(categoryResponseDTO);

@@ -8,7 +8,7 @@ import lombok.*;
 @RequiredArgsConstructor
 public  class DefaultSubcategoryDTO{
 
-    Integer id;
+    Integer id ;
 
     String title;
 
