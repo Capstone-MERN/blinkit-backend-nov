@@ -2,8 +2,8 @@ package com.CapStone.blinkitservice.order;
 
 import com.CapStone.blinkitservice.common.error.GenericErrorResponse;
 import com.CapStone.blinkitservice.common.response.GenericResponse;
-import com.CapStone.blinkitservice.order.orderDTO.OrderRequest;
-import com.CapStone.blinkitservice.order.orderDTO.OrderResponse;
+import com.CapStone.blinkitservice.order.model.OrderRequest;
+import com.CapStone.blinkitservice.order.model.OrderResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class OrderController {
    private OrderService orderService;
 
    @PostMapping("/place-order")
-   public ResponseEntity<GenericResponse> order(@Valid @RequestBody OrderRequest orderRequest, @AuthenticationPrincipal String email){
+   public ResponseEntity<GenericResponse> placeOrder(@Valid @RequestBody OrderRequest orderRequest, @AuthenticationPrincipal String email){
 
         try{
             OrderResponse response= orderService.placeOrder(orderRequest,email);

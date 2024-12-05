@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.order.orderDTO;
+package com.CapStone.blinkitservice.order.model;
 
 import com.CapStone.blinkitservice.common.response.GenericResponse;
 import lombok.Builder;

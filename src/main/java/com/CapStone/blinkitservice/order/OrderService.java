@@ -6,8 +6,8 @@ import com.CapStone.blinkitservice.common.StringConstants;
 import com.CapStone.blinkitservice.order.entity.OrderEntity;
 import com.CapStone.blinkitservice.order.entity.OrderItemEntity;
 import com.CapStone.blinkitservice.order.enums.DeliveryStatus;
-import com.CapStone.blinkitservice.order.orderDTO.OrderRequest;
-import com.CapStone.blinkitservice.order.orderDTO.OrderResponse;
+import com.CapStone.blinkitservice.order.model.OrderRequest;
+import com.CapStone.blinkitservice.order.model.OrderResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.user.AddressBookRepository;
 import com.CapStone.blinkitservice.user.UserRepository;
@@ -34,7 +34,7 @@ public class OrderService {
     private AddressBookRepository addressBookRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderItemRepository orderItemRepository;
 
 
     @Transactional
@@ -50,10 +50,14 @@ public class OrderService {
 
         AddressBookEntity addressBookEntity=addressBookEntityResult.get();
 
+        if(!addressBookEntity.getUserEntity().equals(userEntity)){
+            throw new RuntimeException("The given address is not in your saved addresses");
+        }
+
         List<CartItemEntity> cartItems=cartRepository.findByUserEntity(userEntity);
 
         if(cartItems.isEmpty()){
-            throw new RuntimeException("Sorry,Unable to order because your cart is empty");
+            throw new RuntimeException("Sorry,Unable to placing order because your cart is empty");
         }
 
         OrderEntity orderEntity=OrderEntity.builder()
@@ -66,9 +70,9 @@ public class OrderService {
                 .deliveryStatus(DeliveryStatus.PENDING)
                 .build();
 
-        generateOrder(cartItems,orderEntity);
+        List<OrderItemEntity> orderItemEntities= generateOrder(cartItems,orderEntity);
 
-        orderRepository.save(orderEntity);
+        orderItemRepository.saveAll(orderItemEntities);
 
         cartRepository.deleteAllByUserId(userEntity.getId());
 
@@ -77,7 +81,7 @@ public class OrderService {
                 .message(StringConstants.ORDER_STATUS).build();
     }
 
-    private void generateOrder(List<CartItemEntity> cartItems,OrderEntity orderEntity){
+    private List<OrderItemEntity> generateOrder(List<CartItemEntity> cartItems,OrderEntity orderEntity){
 
         List<OrderItemEntity> orderItemEntities=new ArrayList<>();
 
@@ -104,9 +108,10 @@ public class OrderService {
             orderItemEntities.add(orderItemEntity);
         }
 
-        orderEntity.setOrderItemEntities(orderItemEntities);
         orderEntity.setTotalAmountPaid(amountWithDiscount);
         orderEntity.setAmountSaved(totalAmount-amountWithDiscount);
+
+        return orderItemEntities;
 
     }
 }

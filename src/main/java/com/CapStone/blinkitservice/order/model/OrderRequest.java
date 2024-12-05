@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.order.orderDTO;
+package com.CapStone.blinkitservice.order.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

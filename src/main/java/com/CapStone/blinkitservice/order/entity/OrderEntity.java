@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 
 @Entity
 @Table(name = "orders")
@@ -56,8 +54,5 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "address_book_id", nullable = false)
     AddressBookEntity addressBookEntity;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderEntity")
-    List<OrderItemEntity> orderItemEntities;
 
 }
