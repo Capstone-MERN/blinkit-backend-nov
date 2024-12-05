@@ -98,7 +98,7 @@ public class CartService {
                 cartItem.setQuantity(cartRequest.getQuantity());
             }
             else{
-                CartItemEntity newCartItem= CartItemEntity.builder()
+                CartItemEntity newCartItem = CartItemEntity.builder()
                         .userEntity(user)
                         .quantity(cartRequest.getQuantity())
                         .productEntity(productEntity)
@@ -152,6 +152,15 @@ public class CartService {
                 .build();
 
         return response;
+    }
+
+
+
+
+
+    public int getProductQuantityInCart(int userId, int productId){
+
+        return cartRepository.getProductQuantityInCart(userId, productId);
     }
 
 

@@ -23,4 +23,7 @@ public interface CartRepository extends JpaRepository<CartItemEntity, Integer> {
     @Modifying
     @Query(value = "DELETE FROM cart_items WHERE user_id = :userId", nativeQuery = true)
     public void deleteAllByUserId(@Param("userId") int userId);
+
+    @Query(value = "SELECT COALESCE(quantity, 0) FROM cart_items WHERE user_id =:userId AND product_id =:productId", nativeQuery = true)
+    public int getProductQuantityInCart(@Param("userId") int userId, @Param("productId") int productId);
 }
