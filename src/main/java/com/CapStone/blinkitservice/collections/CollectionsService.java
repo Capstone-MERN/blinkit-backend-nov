@@ -39,20 +39,15 @@ public class CollectionsService {
             List<ProductEntity> products = collectionProductsRepository.findProductsByCollectionId(collection.getId());
             List<ProductResponseDto> productsResponse = new ArrayList<>();
 
-            boolean loggedInStatus = false;
-            UserEntity currUser = null;
-            if(userEmail != null) {
-                currUser = userRepository.findByEmail(userEmail);
-                loggedInStatus = true;
-            }
-
             for(ProductEntity product : products){
                 productsResponse.add(ProductResponseDto.builder()
                                 .title(product.getName())
                                 .discountedPercent(product.getPrice() - (product.getPrice() * product.getDiscount()) / 100)
                                 .imageUrl(product.getImageUrl())
                                 .maxQuantity(product.getMaxOrderLimit())
-                                .quantity(loggedInStatus == false ? null : cartService.getProductQuantityInCart(currUser.getId(),product.getId()))                                    // TODO from cart
+                                .quantity(0)  // TODO from cart
+                        //need to fetch logged in user incase of logged in, else to provide 0 in quantity
+                        // jwt to be altered to handle this case, as currently jwt will not add user details to security cotext
                                 .description(product.getDescription())
                                 .discountPercent(product.getDiscount())
                                 .originalPrice(product.getPrice())
