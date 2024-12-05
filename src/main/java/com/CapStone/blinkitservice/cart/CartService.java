@@ -108,7 +108,7 @@ public class CartService {
         }
     }
 
-    private UpdateCartResponse buildUpdateCartResponse(List<CartItemEntity> cartItemOfUser){
+    public UpdateCartResponse buildUpdateCartResponse(List<CartItemEntity> cartItemOfUser){
 
         List<UpdateCartProductResponse> productResponses = new ArrayList<>();
         Float totalWithoutDiscount = Float.valueOf(0.0f);
@@ -119,9 +119,9 @@ public class CartService {
         for(CartItemEntity cartItem:cartItemOfUser){
             ProductEntity productEntity=cartItem.getProductEntity();
 
-            Double discountApplied = 0.0;
+            Float discountApplied = 0.0f;
             if(productEntity.getDiscount() != null){
-                discountApplied = (productEntity.getPrice()*(productEntity.getDiscount()/100.0));
+                discountApplied = productEntity.getPrice()*(productEntity.getDiscount()/100);
             }
 
             UpdateCartProductResponse productResponse = UpdateCartProductResponse.builder()
@@ -136,8 +136,8 @@ public class CartService {
                     .isAvailable(productEntity.isAvailable())
                     .build();
 
-            totalWithoutDiscount += productEntity.getPrice().floatValue()*cartItem.getQuantity();
-            grandTotal += productResponse.getDiscountedPrice().floatValue()*cartItem.getQuantity();
+            totalWithoutDiscount += productEntity.getPrice()*cartItem.getQuantity();
+            grandTotal += productResponse.getDiscountedPrice()*cartItem.getQuantity();
             uniqueQuantity += 1;
             totalQuantity += cartItem.getQuantity();
             productResponses.add(productResponse);

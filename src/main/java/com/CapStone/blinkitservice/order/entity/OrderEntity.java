@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "orders")
@@ -28,8 +30,8 @@ public class OrderEntity {
     @Column(name = "total_amount_paid", nullable = false)
     Float totalAmountPaid;
 
-    @Column(name = "delivery_charge")
-    Float deliveryCharge;
+//    @Column(name = "delivery_charge")
+//    Float deliveryCharge;
 
     @Column(name = "amount_saved")
     Float amountSaved;
@@ -40,7 +42,7 @@ public class OrderEntity {
     @Column(name = "ordered_location_longitude", nullable = false)
     float orderedLocationLongitude;
 
-    @Column(name = "contact_number", nullable = false)
+    @Column(name = "contact_number", nullable = false,length = 10)
     String contactNumber;
 
     @Enumerated(EnumType.STRING)
@@ -54,5 +56,8 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "address_book_id", nullable = false)
     AddressBookEntity addressBookEntity;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderEntity")
+    List<OrderItemEntity> orderItemEntities;
 
 }

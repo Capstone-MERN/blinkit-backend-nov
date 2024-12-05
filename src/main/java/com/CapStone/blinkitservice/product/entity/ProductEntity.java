@@ -34,10 +34,10 @@ public class ProductEntity {
     int maxOrderLimit;
 
     @Column(name = "price", nullable = false)
-    Double price;
+    Float price;
 
     @Column(name = "discount")
-    Double discount;
+    Float discount;
 
     @Column(name = "is_available", nullable = false)
     boolean isAvailable;
