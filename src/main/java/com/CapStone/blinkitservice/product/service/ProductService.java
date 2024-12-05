@@ -1,5 +1,6 @@
 package com.CapStone.blinkitservice.product.service;
 
+import com.CapStone.blinkitservice.product.dto.ProductDetailResponseDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.enums.SearchFilters;
@@ -33,4 +34,10 @@ public class ProductService {
     }
 
 
+    public ProductDetailResponseDto productDetail(int id) throws Exception {
+
+        ProductEntity product = productRepository.findById(id).get();
+
+        return ProductTransformer.productToProductDetailResponse(product);
+    }
 }
