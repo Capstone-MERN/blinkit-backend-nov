@@ -30,9 +30,6 @@ public class ProductEntity {
     @Column(name = "description", nullable = false)
     String description;
 
-    @Column(name = "unit", nullable = false)
-    String unit;
-
     @Column(name = "image_url")
     String imageUrl;
 

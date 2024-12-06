@@ -2,9 +2,7 @@ package com.CapStone.blinkitservice.auth;
 
 import com.CapStone.blinkitservice.user.model.UserRequest;
 import jakarta.validation.Valid;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +10,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 
 
 @RestController
@@ -23,7 +19,6 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
-
 
     @PostMapping("/signin")
     public ResponseEntity<String> signIn(@RequestBody AuthRequest authRequest) {
@@ -38,7 +33,6 @@ public class AuthController {
     }
 
 
-
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signUp(@Valid @RequestBody UserRequest userRequest) {
 
@@ -49,9 +43,9 @@ public class AuthController {
         } catch (DataIntegrityViolationException e) {
             String duplicateField = "";
 
-            if (e.getMessage().contains("UK6dotkott2kjsp8vw4d0m25fb7")) {
+            if (e.getMessage().contains("unique_email_field")) {
                 duplicateField += "email already exist. ";
-            } else if (e.getMessage().contains("UKr7c96a004bv8w16jgdm8imich")) {
+            } else if (e.getMessage().contains("unique_mobile_number_field")) {
                 duplicateField += "mobile number already exist.";
             } else {
                 duplicateField += "details already exist.";

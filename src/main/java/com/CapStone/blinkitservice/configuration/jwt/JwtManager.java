@@ -14,8 +14,8 @@ public class JwtManager {
 
     private final String privateKey = StringConstants.PRIVATEKEY;
 
-    public String generateToken(String email){
-        Map<String, Object> claims = new HashMap<>();                   // payload will be stored in this
+    public String generateToken(String email) {
+        Map<String, Object> claims = new HashMap<>();                 // payload will be stored in this
         claims.put(StringConstants.EMAIL, email);
 
         Calendar calendar = Calendar.getInstance();
@@ -29,15 +29,16 @@ public class JwtManager {
                 .compact();
     }
 
-    public boolean validateToken(String token){
-        try{
+    public boolean validateToken(String token) {
+        try {
 
             Jwts.parser()
-                    .setSigningKey(privateKey)
-                    .parseClaimsJwt(token)                             // to decode the token
+                    .setSigningKey(privateKey.getBytes(StandardCharsets.UTF_8))
+                    .parseClaimsJws(token)                             // to decode the token
                     .getBody();
+
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -45,7 +46,7 @@ public class JwtManager {
     public JwtAuthResponse getUserInfo(String token) {
         try {
             Map<String, Object> claims = Jwts.parser()
-                    .setSigningKey(privateKey)
+                    .setSigningKey(privateKey.getBytes(StandardCharsets.UTF_8))
                     .parseClaimsJws(token)
                     .getBody();
 
