@@ -1,5 +1,6 @@
 package com.CapStone.blinkitservice.product.controller;
 
+import com.CapStone.blinkitservice.product.dto.ProductDetailResponseDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchRequestDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
 import com.CapStone.blinkitservice.product.service.ProductService;
@@ -7,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -32,5 +30,20 @@ public class ProductController {
         }
 
         return new ResponseEntity<>(productSearchResponseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("details")
+    public ResponseEntity<Object> productDetail(@RequestParam int id){
+
+        ProductDetailResponseDto productDetailResponseDto;
+
+        try {
+            productDetailResponseDto = productService.productDetail(id);
+
+            return new ResponseEntity<>(productDetailResponseDto, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
