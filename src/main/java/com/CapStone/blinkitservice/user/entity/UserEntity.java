@@ -1,5 +1,6 @@
 package com.CapStone.blinkitservice.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +35,8 @@ public class UserEntity {
     String mobileNumber;
 
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     List<AddressBookEntity> addresses;
 
 }
