@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
+import java.util.List;
 
 
 @Entity
@@ -33,5 +33,8 @@ public class UserEntity {
     @Column(name = "mobile_number", nullable = false, unique =true, length = 10)
     String mobileNumber;
 
+
+    @OneToMany
+    List<AddressBookEntity> addresses;
 
 }
