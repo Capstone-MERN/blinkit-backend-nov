@@ -11,11 +11,11 @@ import lombok.experimental.FieldDefaults;
 public class ProductResponseDto {
 
     String title;
-    Double price;
+    Float price;
     String imageUrl;
     Integer maxQuantity;
     Integer quantity;
     String description;
-    Double discountPercent;
-    Double originalPrice;
+    Float discountPercent;
+    Float originalPrice;
 }

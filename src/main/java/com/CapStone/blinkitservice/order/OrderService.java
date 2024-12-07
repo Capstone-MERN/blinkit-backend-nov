@@ -85,7 +85,7 @@ public class OrderService {
 
         List<OrderItemEntity> orderItemEntities=new ArrayList<>();
 
-        Float totalAmount=0.0f;
+        float totalAmount=0.0f;
         float amountWithDiscount=0.0f;
 
         for (CartItemEntity cartItem:cartItems){
