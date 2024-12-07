@@ -18,7 +18,7 @@ public interface CartRepository extends JpaRepository<CartItemEntity, Integer> {
 
     @Modifying
     @Query(value = "DELETE FROM cart_items WHERE user_id = :userId AND product_id NOT IN (:productIds)", nativeQuery = true)
-    public void deleteInvalidProductsByUserIdAndProductIds(@Param("userId") int userId, @Param("productIds") List<Integer> productIds);
+    public void removeNonExistingProductsFromCart(@Param("userId") int userId, @Param("productIds") List<Integer> productIds);
 
     @Modifying
     @Query(value = "DELETE FROM cart_items WHERE user_id = :userId", nativeQuery = true)

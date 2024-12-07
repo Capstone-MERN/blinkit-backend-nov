@@ -5,17 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponseDto {
+public class ProductDetailResponseDto {
 
+    int id;
     String title;
-    Double price;
-    String imageUrl;
-    Integer maxQuantity;
-    Integer quantity;
     String description;
-    Double discountPercent;
-    Double originalPrice;
+    List<String> gallery;
+    int cartQuantity;
+    int maxQuantityLimit;
+    List<Map<String, String>> productDetails;
+
 }
+
+
