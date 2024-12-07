@@ -3,9 +3,12 @@ package com.CapStone.blinkitservice.product.entity;
 
 import com.CapStone.blinkitservice.brand.entity.BrandEntity;
 import com.CapStone.blinkitservice.category.CategoryEntity.SubCategoryEntity;
+import com.CapStone.blinkitservice.product.converter.JsonConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Map;
 
 @Entity
 @Table(name="products")
@@ -58,4 +61,8 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     BrandEntity brandEntity;
+
+    @Column(columnDefinition = "json")
+    @Convert(converter = JsonConverter.class)
+    Map<String, Object> metaData;
 }

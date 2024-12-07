@@ -8,15 +8,14 @@ import com.CapStone.blinkitservice.cart.model.UpdateCartResponse;
 import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResponse;
 import com.CapStone.blinkitservice.product.ProductRepository;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
+import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -31,10 +30,10 @@ public class CartService {
     ProductRepository productRepository;
 
     @Transactional
-    public UpdateCartResponse updateCartDemo(UpdateCartRequest updateCartRequest, String userEmail) throws InvalidCartPayloadResponse {
+    public UpdateCartResponse updateCart(UpdateCartRequest updateCartRequest, String userEmail) throws InvalidCartPayloadResponse {
 
-        List<CartRequest> items = updateCartRequest.getItems();
-        List<Integer> productIds = extractProductIds(items);
+        List<CartRequest> requestItems = updateCartRequest.getItems();
+        List<Integer> productIds = validateCartInfo(requestItems);
 
         UserEntity user = userRepository.findByEmail(userEmail);
 
@@ -50,65 +49,73 @@ public class CartService {
                             .build();
         }
 
-        cartRepository.deleteInvalidProductsByUserIdAndProductIds(user.getId(), productIds);
+        cartRepository.removeNonExistingProductsFromCart(user.getId(), productIds);
 
-        List<CartItemEntity> cartItemOfUser = cartRepository.findByUserEntity(user);
+        List<CartItemEntity> userCartItems = cartRepository.findByUserEntity(user);
 
-        syncWithBackendCartItems(cartItemOfUser,items,user);
+        syncWithBackendCartItems(userCartItems,requestItems,user);
 
-        cartRepository.saveAll(cartItemOfUser);
+        cartRepository.saveAll(userCartItems);
 
-        return buildUpdateCartResponse(cartItemOfUser);
+        return buildUpdateCartResponse(userCartItems);
 
     }
 
-    private List<Integer> extractProductIds(List<CartRequest> items) throws InvalidCartPayloadResponse {
-        List<Integer> pIds=new ArrayList<>();
-        for (CartRequest cartRequest:items){
+    private List<Integer> validateCartInfo(List<CartRequest> requestItems) throws InvalidCartPayloadResponse {
+
+        Map<Integer, Integer> requestCartMap = new HashMap<>();
+        List<Integer> productIds=new ArrayList<>();
+
+        requestItems.forEach(cartRequest -> {
             if(cartRequest.getQuantity()<=0){
-                throw new InvalidCartPayloadResponse("The given quantity is less than one for productId " + cartRequest.getProductId());
+                throw new InvalidCartPayloadResponse("The given quantity is less than one for product id " + cartRequest.getProductId());
             }
-            if(pIds.contains(cartRequest.getProductId())){
+            if(requestCartMap.containsKey(cartRequest.getProductId())){
                 throw new InvalidCartPayloadResponse("ProductId " + cartRequest.getProductId() + " is Duplicated");
             }
-            pIds.add(cartRequest.getProductId());
+            productIds.add(cartRequest.getProductId());
+            requestCartMap.put(cartRequest.getProductId(), cartRequest.getQuantity());
+        });
+
+        List<ProductMaxOrderProjection> productsWithMaxQuantity =productRepository.findMaxOrderLimitByProductIds(productIds);
+
+        if(productsWithMaxQuantity.size()!= requestCartMap.size())  throw new InvalidCartPayloadResponse("Invalid product ids");
+
+        for(ProductMaxOrderProjection productEntity:productsWithMaxQuantity){
+
+            if(requestCartMap.get(productEntity.getId())>productEntity.getMaxOrderLimit()){
+                throw new InvalidCartPayloadResponse("The given quantity is exceeding maximum limit for productId "+ productEntity.getId());
+            }
         }
-        return pIds;
+
+        return productIds;
+
     }
 
-    private void syncWithBackendCartItems(List<CartItemEntity> cartItemOfUser,List<CartRequest> requestList,UserEntity user) throws InvalidCartPayloadResponse {
+    private void syncWithBackendCartItems(List<CartItemEntity> userCartItems,List<CartRequest> requestList,UserEntity user) throws InvalidCartPayloadResponse {
 
         for(CartRequest cartRequest:requestList){
 
-            Optional<CartItemEntity> cartResult = cartItemOfUser.stream()
+            Optional<CartItemEntity> cartResult = userCartItems.stream()
                     .filter(cart->cart.getProductEntity().getId()==cartRequest.getProductId()).findFirst();
 
-            Optional<ProductEntity> productResult = productRepository.findById(cartRequest.getProductId());
-            if(productResult.isEmpty()){
-                throw new InvalidCartPayloadResponse("productId "+ cartRequest.getProductId() +" does not exist");
-            }
-
-            ProductEntity productEntity = productResult.get();
-
-            if(productEntity.getMaxOrderLimit() < cartRequest.getQuantity()){
-                throw new InvalidCartPayloadResponse("The given quantity is exceeding maximum limit for productId "+ cartRequest.getProductId());
-            }
             if(cartResult.isPresent()){
                 CartItemEntity cartItem=cartResult.get();
                 cartItem.setQuantity(cartRequest.getQuantity());
             }
             else{
+                ProductEntity productEntity=productRepository.getReferenceById(cartRequest.getProductId());
                 CartItemEntity newCartItem= CartItemEntity.builder()
                         .userEntity(user)
                         .quantity(cartRequest.getQuantity())
                         .productEntity(productEntity)
                         .build();
-                cartItemOfUser.add(newCartItem);
+                userCartItems.add(newCartItem);
             }
         }
     }
 
-    public UpdateCartResponse buildUpdateCartResponse(List<CartItemEntity> cartItemOfUser){
+    private UpdateCartResponse buildUpdateCartResponse(List<CartItemEntity> userCartItems){
 
         List<UpdateCartProductResponse> productResponses = new ArrayList<>();
         Float totalWithoutDiscount = Float.valueOf(0.0f);
@@ -116,7 +123,7 @@ public class CartService {
         int uniqueQuantity = 0;
         int totalQuantity = 0;
 
-        for(CartItemEntity cartItem:cartItemOfUser){
+        for(CartItemEntity cartItem:userCartItems){
             ProductEntity productEntity=cartItem.getProductEntity();
 
             Float discountApplied = 0.0f;

@@ -25,7 +25,7 @@ public class CartController {
     public ResponseEntity<GenericResponse> updateCart(@RequestBody UpdateCartRequest updateCartRequest, @AuthenticationPrincipal String email){
 
         try{
-             UpdateCartResponse response = cartService.updateCartDemo(updateCartRequest, email);
+             UpdateCartResponse response = cartService.updateCart(updateCartRequest, email);
              return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (InvalidCartPayloadResponse e){
             return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
