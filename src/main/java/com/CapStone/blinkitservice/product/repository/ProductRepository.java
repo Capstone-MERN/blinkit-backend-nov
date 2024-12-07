@@ -1,11 +1,15 @@
 package com.CapStone.blinkitservice.product.repository;
 
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
+import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
@@ -42,4 +46,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
         CASE WHEN :filter = 'A_TO_Z' THEN p.name END ASC
     """, nativeQuery = true)
     Page<ProductEntity> findAllProductsByFilter(Integer subCategoryId, String filter, Pageable pageable);
+
+    @Query(value = "select p.id,p.max_order_limit from products p where p.id in(:productIds)",nativeQuery = true)
+    List<ProductMaxOrderProjection> findMaxOrderLimitByProductIds(@Param("productIds") List<Integer> productIds);
 }
