@@ -17,9 +17,9 @@ public class UpdateCartProductResponse {
 
     String imageUrl;
 
-    Double originalPrice;
+    Float originalPrice;
 
-    Double discountedPrice;
+    Float discountedPrice;
 
     int maxOrderLimit;
 
