@@ -6,9 +6,9 @@ import com.CapStone.blinkitservice.cart.model.UpdateCartProductResponse;
 import com.CapStone.blinkitservice.cart.model.UpdateCartRequest;
 import com.CapStone.blinkitservice.cart.model.UpdateCartResponse;
 import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResponse;
-import com.CapStone.blinkitservice.product.ProductRepository;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;
+import com.CapStone.blinkitservice.product.repository.ProductRepository;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.transaction.Transactional;
@@ -104,6 +104,7 @@ public class CartService {
                 cartItem.setQuantity(cartRequest.getQuantity());
             }
             else{
+              
                 ProductEntity productEntity=productRepository.getReferenceById(cartRequest.getProductId());
                 CartItemEntity newCartItem= CartItemEntity.builder()
                         .userEntity(user)
@@ -159,6 +160,15 @@ public class CartService {
                 .build();
 
         return response;
+    }
+
+
+
+
+
+    public int getProductQuantityInCart(int userId, int productId){
+
+        return cartRepository.getProductQuantityInCart(userId, productId);
     }
 
 
