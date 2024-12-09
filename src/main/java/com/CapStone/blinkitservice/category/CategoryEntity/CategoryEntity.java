@@ -20,11 +20,11 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @JoinColumn(nullable = false)
+    @Column(name = "title", nullable = false)
     String title;
 
-    @JoinColumn(nullable = false)
-    String image_url;
+    @Column(name = "image_url", nullable = false)
+    String imageUrl;
 
     @OneToMany(mappedBy = "categoryEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubCategoryEntity> subCategoryEntities;

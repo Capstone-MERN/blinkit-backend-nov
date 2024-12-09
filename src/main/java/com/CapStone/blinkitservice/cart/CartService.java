@@ -166,9 +166,15 @@ public class CartService {
 
 
 
-    public int getProductQuantityInCart(int userId, int productId){
+    public HashMap<Integer, Integer> getProductVsQuantityInCartByUserId(int userId){
 
-        return cartRepository.getProductQuantityInCart(userId, productId);
+        List<CartItemEntity> cartItems = cartRepository.getCartItemByUserId(userId);
+        HashMap<Integer, Integer> productVsQuantityMap = new HashMap<>();
+
+        for(CartItemEntity cartItem : cartItems){
+            productVsQuantityMap.put(cartItem.getProductEntity().getId(), cartItem.getQuantity());
+        }
+        return productVsQuantityMap;
     }
 
 
