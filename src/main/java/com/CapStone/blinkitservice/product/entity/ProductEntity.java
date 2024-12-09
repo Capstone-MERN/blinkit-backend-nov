@@ -3,9 +3,12 @@ package com.CapStone.blinkitservice.product.entity;
 
 import com.CapStone.blinkitservice.brand.entity.BrandEntity;
 import com.CapStone.blinkitservice.category.CategoryEntity.SubCategoryEntity;
+import com.CapStone.blinkitservice.product.converter.JsonConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Map;
 
 @Entity
 @Table(name="products")
@@ -27,9 +30,6 @@ public class ProductEntity {
     @Column(name = "description", nullable = false)
     String description;
 
-    @Column(name = "unit", nullable = false)
-    String unit;
-
     @Column(name = "image_url")
     String imageUrl;
 
@@ -37,10 +37,10 @@ public class ProductEntity {
     int maxOrderLimit;
 
     @Column(name = "price", nullable = false)
-    Double price;
+    Float price;
 
     @Column(name = "discount")
-    Double discount;
+    Float discount;
 
     @Column(name = "is_available", nullable = false)
     boolean isAvailable;
@@ -61,4 +61,8 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     BrandEntity brandEntity;
+
+    @Column(columnDefinition = "json")
+    @Convert(converter = JsonConverter.class)
+    Map<String, Object> metaData;
 }

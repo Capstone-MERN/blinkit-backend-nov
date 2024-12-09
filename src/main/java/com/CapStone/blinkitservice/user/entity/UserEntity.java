@@ -9,7 +9,10 @@ import java.util.List;
 
 
 @Entity
-@Table(name="users")
+@Table(name="users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email", name = "unique_email_field"),
+        @UniqueConstraint(columnNames = "mobile_number", name = "unique_mobile_number_field")
+})
 @Data
 @Builder
 @AllArgsConstructor

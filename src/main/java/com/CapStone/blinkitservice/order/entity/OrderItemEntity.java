@@ -28,7 +28,7 @@ public class OrderItemEntity {
     @Column(name = "discount")
     Float discount;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", nullable = false)
     OrderEntity orderEntity;
 
