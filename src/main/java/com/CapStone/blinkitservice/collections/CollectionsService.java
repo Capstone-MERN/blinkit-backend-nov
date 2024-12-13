@@ -62,15 +62,9 @@ public class CollectionsService {
 
     private void buildCollectionsResponse(Map<Integer,List<ProductEntity>> collectionMap,List<CollectionResponse> collections, String userEmail){
 
-        boolean loggedInStatus = false;
-        UserEntity currUser = null;
-        HashMap<Integer, Integer> productVsQuantityMap = new HashMap<>();
-        if(userEmail != null) {
-            currUser = userRepository.findByEmail(userEmail);
-            loggedInStatus = true;
-            productVsQuantityMap = cartService.getProductVsQuantityInCartByUserId(currUser.getId());
-        }
 
+        HashMap<Integer, Integer> productVsQuantityMap = cartService.getProductVsQuantityInCartByUserEmail(userEmail);
+        //Invoke this method to get map key=productId, value=cartQuantity and pass userEmail - it is taken from @AuthenticationPrincipal
 
         for(CollectionResponse collection : collections){
 
@@ -87,7 +81,8 @@ public class CollectionsService {
                         .price(product.getPrice() - (product.getPrice() * discount) / 100)
                         .imageUrl(product.getImageUrl())
                         .maxQuantity(product.getMaxOrderLimit())
-                        .quantity(loggedInStatus ? productVsQuantityMap.getOrDefault(product.getId(),0) : 0)
+                        .quantity(productVsQuantityMap.getOrDefault(product.getId(),0))
+                        //here get quantity from map...which is given by cart service.
                         .description(product.getDescription())
                         .discountPercent(discount)
                         .originalPrice(product.getPrice())

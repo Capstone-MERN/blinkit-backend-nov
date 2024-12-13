@@ -164,16 +164,26 @@ public class CartService {
 
 
 
+    public HashMap<Integer, Integer> getProductVsQuantityInCartByUserEmail(String userEmail){
 
+        if (userEmail==null || userEmail.isEmpty()){
+            return new HashMap<>();
+        }
 
-    public HashMap<Integer, Integer> getProductVsQuantityInCartByUserId(int userId){
+        UserEntity user=userRepository.findByEmail(userEmail);
 
-        List<CartItemEntity> cartItems = cartRepository.getCartItemByUserId(userId);
+        List<CartItemEntity> cartItems = cartRepository.getCartItemByUserId(user.getId());
+
+        if (cartItems.isEmpty()){
+            return new HashMap<>();
+        }
+
         HashMap<Integer, Integer> productVsQuantityMap = new HashMap<>();
 
         for(CartItemEntity cartItem : cartItems){
             productVsQuantityMap.put(cartItem.getProductEntity().getId(), cartItem.getQuantity());
         }
+
         return productVsQuantityMap;
     }
 
