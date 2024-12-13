@@ -14,15 +14,16 @@ import java.util.stream.Collectors;
 
 public class ProductTransformer {
 
-    public static List<ProductResponseDto> productToProductResponse(Page<ProductEntity> products) {
+
+    public static List<ProductResponseDto> productToProductResponse(Page<ProductEntity> products, HashMap<Integer, Integer> quantities) {
 
         return products.getContent().stream()
                 .map(product -> ProductResponseDto.builder()
                         .title(product.getName())
-                        .price(product.getPrice())
+                        .price(product.getPrice() * (100 - product.getDiscount()))
                         .imageUrl(product.getImageUrl())
                         .maxQuantity(product.getMaxOrderLimit())
-                        .quantity(0) // TODO: Integrate cart service to set actual quantity
+                        .quantity(!quantities.isEmpty() ? quantities.get(product.getId()) != null ? quantities.get(product.getId()) : 0 : 0)
                         .description(product.getDescription())
                         .discountPercent(product.getDiscount())
                         .originalPrice(product.getPrice())
@@ -31,24 +32,24 @@ public class ProductTransformer {
                 .collect(Collectors.toList());
     }
 
-    public static ProductSearchResponseDto createProductSearchResponse(Page<ProductEntity> products){
+    public static ProductSearchResponseDto createProductSearchResponse(Page<ProductEntity> products, HashMap<Integer, Integer> quantities){
 
         return ProductSearchResponseDto.builder()
-                .products(productToProductResponse(products))
+                .products(productToProductResponse(products, quantities))
                 .size(products.getSize())
                 .pageNumber(products.getNumber())
                 .hasNextPage(products.hasNext())
                 .build();
     }
 
-    public static ProductDetailResponseDto productToProductDetailResponse(ProductEntity product) throws Exception {
+    public static ProductDetailResponseDto productToProductDetailResponse(ProductEntity product, int quantity) throws Exception {
 
         MetaData data = transformMetaData(product.getMetaData());
         return ProductDetailResponseDto.builder()
                 .id(product.getId())
                 .title(product.getName())
                 .description(product.getDescription())
-                .cartQuantity(0)
+                .cartQuantity(quantity)
                 .maxQuantityLimit(product.getMaxOrderLimit())
                 .gallery(data.getImages())
                 .productDetails(data.getDetails())
