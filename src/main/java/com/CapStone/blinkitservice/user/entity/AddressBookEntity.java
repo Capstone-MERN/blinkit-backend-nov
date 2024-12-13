@@ -37,4 +37,5 @@ public class AddressBookEntity {
     @JoinColumn(name = "user_id", nullable = false)
     UserEntity userEntity;
 
+    String phone_no;
 }
