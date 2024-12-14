@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/auth/products/v1")
+@RequestMapping("/products/v1")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -34,7 +34,7 @@ public class ProductController {
         return new ResponseEntity<>(productSearchResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("details")
+    @GetMapping("/details")
     public ResponseEntity<Object> productDetail(@RequestParam int id, @AuthenticationPrincipal String userEmail){
 
         ProductDetailResponseDto productDetailResponseDto;

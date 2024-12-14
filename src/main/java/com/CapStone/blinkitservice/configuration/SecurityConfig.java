@@ -1,5 +1,6 @@
 package com.CapStone.blinkitservice.configuration;
 
+import com.CapStone.blinkitservice.common.EndPoints;
 import com.CapStone.blinkitservice.configuration.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +26,8 @@ public class SecurityConfig {
 
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/**").authenticated()                       // all other routes will now come under spring security
+                .requestMatchers(EndPoints.publicEndPoints).permitAll()
+                .anyRequest().authenticated()   // all other routes will now come under spring security
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // to not save session in session management as JWT - stateless
                 .and()
