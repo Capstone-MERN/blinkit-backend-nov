@@ -35,7 +35,7 @@ public class CategoryService {
             CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
             categoryResponseDTO.setCategoryId(key.getId());
             categoryResponseDTO.setTitle(key.getTitle());
-            categoryResponseDTO.setImageUrl(key.getImage_url());
+            categoryResponseDTO.setImageUrl(key.getImageUrl());
 
             // creating the default subcategory and setting the value
             DefaultSubcategoryDTO  firstDefaultSubcategory = new DefaultSubcategoryDTO();
