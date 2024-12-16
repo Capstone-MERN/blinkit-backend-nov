@@ -1,6 +1,7 @@
 package com.CapStone.blinkitservice.configuration.jwt;
 
 import com.CapStone.blinkitservice.auth.model.JwtAuthResponse;
+import com.CapStone.blinkitservice.common.EndPoints;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = extractToken(request);
 
-        if (token == null && request.getRequestURI().startsWith("/auth/")) {  // skipping filter for public API
+        if (token == null && EndPoints.isPublicEndPoint(request.getRequestURI())) {  // skipping filter for public API
 // TODO: Improve this code
             filterChain.doFilter(request, response);  // Continue without authentication
 
