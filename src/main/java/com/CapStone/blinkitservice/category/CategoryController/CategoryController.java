@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("auth/category/v1")
+@RequestMapping("/category/v1")
 @RequiredArgsConstructor
 public class CategoryController {
 
