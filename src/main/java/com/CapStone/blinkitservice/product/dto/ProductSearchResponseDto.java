@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 @Builder
 public class ProductSearchResponseDto {
-
     boolean hasNextPage;
     int pageNumber;
     int size;

@@ -1,11 +1,10 @@
-package com.CapStone.blinkitservice.product.service;
+package com.CapStone.blinkitservice.product;
 
 import com.CapStone.blinkitservice.cart.CartService;
 import com.CapStone.blinkitservice.product.dto.ProductDetailResponseDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.enums.SearchFilters;
-import com.CapStone.blinkitservice.product.repository.ProductRepository;
 import com.CapStone.blinkitservice.product.transformer.ProductTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

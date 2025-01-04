@@ -12,7 +12,6 @@ import java.util.Map;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDetailResponseDto {
-
     int id;
     String title;
     String description;
@@ -20,7 +19,6 @@ public class ProductDetailResponseDto {
     int cartQuantity;
     int maxQuantityLimit;
     List<Map<String, String>> productDetails;
-
 }
 
 

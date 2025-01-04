@@ -2,7 +2,7 @@ package com.CapStone.blinkitservice.product.entity;
 
 
 import com.CapStone.blinkitservice.brand.entity.BrandEntity;
-import com.CapStone.blinkitservice.category.CategoryEntity.SubCategoryEntity;
+import com.CapStone.blinkitservice.category.entity.SubCategoryEntity;
 import com.CapStone.blinkitservice.product.converter.JsonConverter;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +24,7 @@ public class ProductEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     int id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     String name;
 
     @Column(name = "description", nullable = false)

@@ -1,9 +1,8 @@
-package com.CapStone.blinkitservice.product.controller;
+package com.CapStone.blinkitservice.product;
 
 import com.CapStone.blinkitservice.product.dto.ProductDetailResponseDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchRequestDto;
 import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
-import com.CapStone.blinkitservice.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;

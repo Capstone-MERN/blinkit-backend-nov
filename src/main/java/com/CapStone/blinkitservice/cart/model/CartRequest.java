@@ -11,9 +11,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartRequest {
-
     int productId;
-
     int quantity;
-
 }

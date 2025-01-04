@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -21,9 +18,8 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @GetMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<GenericResponse> updateCart(@RequestBody UpdateCartRequest updateCartRequest, @AuthenticationPrincipal String email){
-
         try{
              UpdateCartResponse response = cartService.updateCart(updateCartRequest, email);
              return new ResponseEntity<>(response, HttpStatus.OK);
@@ -33,4 +29,6 @@ public class CartController {
             return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // TODO: implement a GET api cart/info for fetching the cart information of the user.
 }

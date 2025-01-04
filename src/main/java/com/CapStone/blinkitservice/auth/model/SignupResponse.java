@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.auth;
+package com.CapStone.blinkitservice.auth.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,6 +8,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthResponse {
+public class SignupResponse {
     String message;
 }

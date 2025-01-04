@@ -8,7 +8,7 @@ import com.CapStone.blinkitservice.cart.model.UpdateCartResponse;
 import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;
-import com.CapStone.blinkitservice.product.repository.ProductRepository;
+import com.CapStone.blinkitservice.product.ProductRepository;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.transaction.Transactional;
@@ -31,15 +31,12 @@ public class CartService {
 
     @Transactional
     public UpdateCartResponse updateCart(UpdateCartRequest updateCartRequest, String userEmail) throws InvalidCartPayloadResponse {
-
         List<CartRequest> requestItems = updateCartRequest.getItems();
         List<Integer> productIds = validateCartInfo(requestItems);
-
         UserEntity user = userRepository.findByEmail(userEmail);
 
         if(productIds.isEmpty()){
             cartRepository.deleteAllByUserId(user.getId());
-
             return UpdateCartResponse.builder()
                             .products(new ArrayList<>())
                             .totalWithoutDiscount(0.0f)
@@ -50,7 +47,6 @@ public class CartService {
         }
 
         cartRepository.removeNonExistingProductsFromCart(user.getId(), productIds);
-
         List<CartItemEntity> userCartItems = cartRepository.findByUserEntity(user);
 
         syncWithBackendCartItems(userCartItems,requestItems,user);
@@ -58,11 +54,9 @@ public class CartService {
         cartRepository.saveAll(userCartItems);
 
         return buildUpdateCartResponse(userCartItems);
-
     }
 
     private List<Integer> validateCartInfo(List<CartRequest> requestItems) throws InvalidCartPayloadResponse {
-
         Map<Integer, Integer> requestCartMap = new HashMap<>();
         List<Integer> productIds=new ArrayList<>();
 
@@ -79,23 +73,22 @@ public class CartService {
 
         List<ProductMaxOrderProjection> productsWithMaxQuantity =productRepository.findMaxOrderLimitByProductIds(productIds);
 
-        if(productsWithMaxQuantity.size()!= requestCartMap.size())  throw new InvalidCartPayloadResponse("Invalid product ids");
+        if(productsWithMaxQuantity.size()!= requestCartMap.size()){
+            throw new InvalidCartPayloadResponse("Invalid product ids");
+        }
 
         for(ProductMaxOrderProjection productEntity:productsWithMaxQuantity){
-
             if(requestCartMap.get(productEntity.getId())>productEntity.getMaxOrderLimit()){
                 throw new InvalidCartPayloadResponse("The given quantity is exceeding maximum limit for productId "+ productEntity.getId());
             }
         }
 
         return productIds;
-
     }
 
     private void syncWithBackendCartItems(List<CartItemEntity> userCartItems,List<CartRequest> requestList,UserEntity user) throws InvalidCartPayloadResponse {
 
         for(CartRequest cartRequest:requestList){
-
             Optional<CartItemEntity> cartResult = userCartItems.stream()
                     .filter(cart->cart.getProductEntity().getId()==cartRequest.getProductId()).findFirst();
 
@@ -104,7 +97,6 @@ public class CartService {
                 cartItem.setQuantity(cartRequest.getQuantity());
             }
             else{
-              
                 ProductEntity productEntity=productRepository.getReferenceById(cartRequest.getProductId());
                 CartItemEntity newCartItem= CartItemEntity.builder()
                         .userEntity(user)
@@ -117,10 +109,9 @@ public class CartService {
     }
 
     private UpdateCartResponse buildUpdateCartResponse(List<CartItemEntity> userCartItems){
-
         List<UpdateCartProductResponse> productResponses = new ArrayList<>();
-        Float totalWithoutDiscount = Float.valueOf(0.0f);
-        Float grandTotal = Float.valueOf(0.0f);
+        float totalWithoutDiscount = 0.0f;
+        float grandTotal = 0.0f;
         int uniqueQuantity = 0;
         int totalQuantity = 0;
 
@@ -151,21 +142,18 @@ public class CartService {
             productResponses.add(productResponse);
         }
 
-        UpdateCartResponse response = UpdateCartResponse.builder()
+        return UpdateCartResponse.builder()
                 .products(productResponses)
                 .totalWithoutDiscount(totalWithoutDiscount)
                 .grandTotal(grandTotal)
                 .uniqueQuantity(uniqueQuantity)
                 .totalQuantity(totalQuantity)
                 .build();
-
-        return response;
     }
 
 
 
     public HashMap<Integer, Integer> getProductVsQuantityInCartByUserEmail(String userEmail){
-
         if (userEmail==null || userEmail.isEmpty()){
             return new HashMap<>();
         }

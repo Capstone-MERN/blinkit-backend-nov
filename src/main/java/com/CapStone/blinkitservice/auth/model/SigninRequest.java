@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.auth;
+package com.CapStone.blinkitservice.auth.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthRequest {
+public class SigninRequest {
     String email;
     String password;
 }

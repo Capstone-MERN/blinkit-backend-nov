@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.category.CategoryEntity;
+package com.CapStone.blinkitservice.category.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +28,4 @@ public class CategoryEntity {
 
     @OneToMany(mappedBy = "categoryEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubCategoryEntity> subCategoryEntities;
-
-
 }

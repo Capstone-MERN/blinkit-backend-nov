@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.user.model;
+package com.CapStone.blinkitservice.auth.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserRequest {
+public class SignupRequest {
 
     @NotBlank(message = "Name cannot be empty")
     String name;

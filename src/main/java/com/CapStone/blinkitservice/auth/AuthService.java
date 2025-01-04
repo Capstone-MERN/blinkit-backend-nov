@@ -1,9 +1,15 @@
 package com.CapStone.blinkitservice.auth;
 
+import com.CapStone.blinkitservice.auth.model.SigninRequest;
+import com.CapStone.blinkitservice.auth.model.SignupResponse;
 import com.CapStone.blinkitservice.configuration.jwt.JwtManager;
+import com.CapStone.blinkitservice.controlleradvice.exceptions.BadRequestException;
+import com.CapStone.blinkitservice.controlleradvice.exceptions.InternalServerException;
+import com.CapStone.blinkitservice.user.UserConstraints;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
-import com.CapStone.blinkitservice.user.model.UserRequest;
+import com.CapStone.blinkitservice.auth.model.SignupRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,30 +26,43 @@ public class AuthService {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
-    public String authenticate(AuthRequest authRequest) {
-        UserEntity user = userRepository.findByEmail(authRequest.getEmail());
-
-        if (user != null && passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
-            String token = jwtManager.generateToken(user.getEmail());
-            return token;
+    public String authenticate(SigninRequest signinRequest) {
+        UserEntity user = userRepository.findByEmail(signinRequest.getEmail());
+        if (user != null && passwordEncoder.matches(signinRequest.getPassword(), user.getPassword())) {
+            return jwtManager.generateToken(user.getEmail());
         }
-
-        return null;
+        throw new BadRequestException("Invalid credentials");
     }
 
-    public AuthResponse signup(UserRequest userRequest) {
-
+    public SignupResponse signup(SignupRequest signupRequest) {
         UserEntity user = UserEntity.builder()
-                .email(userRequest.getEmail())
-                .mobileNumber(userRequest.getMobileNumber())
-                .password(passwordEncoder.encode(userRequest.getPassword()))
-                .name(userRequest.getName())
+                .email(signupRequest.getEmail())
+                .mobileNumber(signupRequest.getMobileNumber())
+                .password(passwordEncoder.encode(signupRequest.getPassword()))
+                .name(signupRequest.getName())
                 .build();
 
+        try {
             userRepository.save(user);
+        }
+        catch(DataIntegrityViolationException exception) {
+            String duplicateField = "";
 
-            return AuthResponse.builder()
-                    .message("Successfully signed up")
+            if (exception.getMessage().contains(UserConstraints.UNIQUE_EMAIL)) {
+                duplicateField += "email already exist. ";
+            } else if (exception.getMessage().contains(UserConstraints.UNIQUE_MOBILE_NUMBER)) {
+                duplicateField += "mobile number already exist.";
+            } else {
+                duplicateField += "details already exist.";
+            }
+            throw new BadRequestException(duplicateField);
+        }
+        catch(Exception exception){
+            throw new InternalServerException(exception.getMessage());
+        }
+
+        return SignupResponse.builder()
+                    .message("Signup success")
                     .build();
     }
 }

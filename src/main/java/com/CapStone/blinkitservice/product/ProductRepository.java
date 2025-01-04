@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.product.repository;
+package com.CapStone.blinkitservice.product;
 
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;

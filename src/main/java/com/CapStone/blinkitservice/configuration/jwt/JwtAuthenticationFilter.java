@@ -22,42 +22,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String token = extractToken(request);
 
         if (token == null && EndPoints.isPublicEndPoint(request.getRequestURI())) {  // skipping filter for public API
-// TODO: Improve this code
+            // TODO: Improve this code
             filterChain.doFilter(request, response);  // Continue without authentication
-
         } else if (token != null && jwtManager.validateToken(token)) {
-
            JwtAuthResponse jwtAuthResponse = jwtManager.getUserInfo(token);
-
-
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+           UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     jwtAuthResponse.getEmail(), null, null);
                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            filterChain.doFilter(request, response);    //to ensure request move to next filter in the security chain
-
+            filterChain.doFilter(request, response);
         } else {
-
             response.setStatus(401);
             response.setContentType("application/json");
             response.getWriter().write("{\"Error\": \"Sorry, Invalid token\"}");
-
         }
-
-
     }
 
     private String extractToken(HttpServletRequest request) {
-
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
         return null;
-
     }
 }

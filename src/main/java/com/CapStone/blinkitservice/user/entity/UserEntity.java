@@ -1,5 +1,6 @@
 package com.CapStone.blinkitservice.user.entity;
 
+import com.CapStone.blinkitservice.user.UserConstraints;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,8 +11,8 @@ import java.util.List;
 
 @Entity
 @Table(name="users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email", name = "unique_email_field"),
-        @UniqueConstraint(columnNames = "mobile_number", name = "unique_mobile_number_field")
+        @UniqueConstraint(columnNames = "email", name = UserConstraints.UNIQUE_EMAIL),
+        @UniqueConstraint(columnNames = "mobile_number", name = UserConstraints.UNIQUE_MOBILE_NUMBER)
 })
 @Data
 @Builder
@@ -36,7 +37,6 @@ public class UserEntity {
 
     @Column(name = "mobile_number", nullable = false, unique =true, length = 10)
     String mobileNumber;
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)

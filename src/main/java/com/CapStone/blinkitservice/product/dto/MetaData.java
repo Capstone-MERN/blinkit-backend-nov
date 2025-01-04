@@ -10,9 +10,6 @@ import java.util.Map;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MetaData {
-
-
     List<Map<String, String>> details;
     List<String> images;
-
 }
