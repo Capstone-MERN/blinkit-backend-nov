@@ -4,6 +4,7 @@ import com.CapStone.blinkitservice.user.Repository.AddressRepository;
 import com.CapStone.blinkitservice.user.Transformer.AddressTransformer;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.dto.AddressRequest;
+import com.CapStone.blinkitservice.user.dto.ResponseDto.AddressResponse;
 import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
 
-    public AddressBookEntity addOrUpdateAddress(String email, AddressRequest addressRequest) {
+    public AddressResponse addOrUpdateAddress(String email, AddressRequest addressRequest) {
         UserEntity user = userRepository.findByEmail(email);
         Integer addressId = addressRequest.getAddressId();
 
@@ -27,11 +28,13 @@ public class AddressService {
                 : createAddress(user, addressRequest);
     }
 
-    private AddressBookEntity updateAddress(Integer addressId, AddressRequest addressRequest) {
+    private AddressResponse updateAddress(Integer addressId, AddressRequest addressRequest) {
         AddressBookEntity address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new RuntimeException("Invalid address ID"));
 
-        return saveAddress(updateAddressDetails(address, addressRequest));
+        AddressBookEntity addressBook = saveAddress(updateAddressDetails(address, addressRequest));
+        AddressResponse response = AddressTransformer.addressToAddressResponse(addressBook);
+        return  response;
     }
 
     private AddressBookEntity updateAddressDetails(AddressBookEntity address, AddressRequest addressRequest) {
@@ -44,7 +47,7 @@ public class AddressService {
         return address;
     }
 
-    private AddressBookEntity createAddress(UserEntity user, AddressRequest addressRequest) {
+    private AddressResponse createAddress(UserEntity user, AddressRequest addressRequest) {
         AddressBookEntity address = AddressTransformer.addressRequestToAddress(addressRequest);
 
         if (user.getAddresses() == null) {
@@ -54,7 +57,7 @@ public class AddressService {
         user.getAddresses().add(address);
 
         userRepository.save(user); // Save the user with the new address
-        return saveAddress(address);
+        return AddressTransformer.addressToAddressResponse(address);
     }
 
     private AddressBookEntity saveAddress(AddressBookEntity address) {
