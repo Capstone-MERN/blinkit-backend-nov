@@ -57,7 +57,7 @@ public class OrderService {
         List<CartItemEntity> cartItems=cartRepository.findByUserEntity(userEntity);
 
         if(cartItems.isEmpty()){
-            throw new NoSuchElementException("Sorry,Unable to placing order because your cart is empty");
+            throw new BadRequestException("Sorry,Unable to placing order because your cart is empty");
         }
 
         OrderEntity orderEntity=OrderEntity.builder()
