@@ -12,9 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateCartResponse implements GenericResponse {
+public class CartResponse implements GenericResponse {
 
-    List<UpdateCartProductResponse> products;
+    List<CartProductResponse> products;
 
     Float totalWithoutDiscount;
 

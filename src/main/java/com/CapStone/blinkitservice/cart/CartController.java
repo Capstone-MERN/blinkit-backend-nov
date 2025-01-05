@@ -1,7 +1,7 @@
 package com.CapStone.blinkitservice.cart;
 
 import com.CapStone.blinkitservice.cart.model.UpdateCartRequest;
-import com.CapStone.blinkitservice.cart.model.UpdateCartResponse;
+import com.CapStone.blinkitservice.cart.model.CartResponse;
 import com.CapStone.blinkitservice.common.error.GenericErrorResponse;
 import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResponse;
 import com.CapStone.blinkitservice.common.response.GenericResponse;
@@ -21,7 +21,7 @@ public class CartController {
     @PutMapping("/update")
     public ResponseEntity<GenericResponse> updateCart(@RequestBody UpdateCartRequest updateCartRequest, @AuthenticationPrincipal String email){
         try{
-             UpdateCartResponse response = cartService.updateCart(updateCartRequest, email);
+             CartResponse response = cartService.updateCart(updateCartRequest, email);
              return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (InvalidCartPayloadResponse e){
             return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
@@ -30,5 +30,14 @@ public class CartController {
         }
     }
 
-    // TODO: implement a GET api cart/info for fetching the cart information of the user.
+
+    @GetMapping("/get")
+    public ResponseEntity<GenericResponse> getCart(@AuthenticationPrincipal String email){
+        try{
+            CartResponse response = cartService.getCart(email);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -2,9 +2,9 @@ package com.CapStone.blinkitservice.cart;
 
 import com.CapStone.blinkitservice.cart.entity.CartItemEntity;
 import com.CapStone.blinkitservice.cart.model.CartRequest;
-import com.CapStone.blinkitservice.cart.model.UpdateCartProductResponse;
+import com.CapStone.blinkitservice.cart.model.CartProductResponse;
 import com.CapStone.blinkitservice.cart.model.UpdateCartRequest;
-import com.CapStone.blinkitservice.cart.model.UpdateCartResponse;
+import com.CapStone.blinkitservice.cart.model.CartResponse;
 import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;
@@ -30,14 +30,14 @@ public class CartService {
     ProductRepository productRepository;
 
     @Transactional
-    public UpdateCartResponse updateCart(UpdateCartRequest updateCartRequest, String userEmail) throws InvalidCartPayloadResponse {
+    public CartResponse updateCart(UpdateCartRequest updateCartRequest, String userEmail) throws InvalidCartPayloadResponse {
         List<CartRequest> requestItems = updateCartRequest.getItems();
         List<Integer> productIds = validateCartInfo(requestItems);
         UserEntity user = userRepository.findByEmail(userEmail);
 
         if(productIds.isEmpty()){
             cartRepository.deleteAllByUserId(user.getId());
-            return UpdateCartResponse.builder()
+            return CartResponse.builder()
                             .products(new ArrayList<>())
                             .totalWithoutDiscount(0.0f)
                             .grandTotal(0.0f)
@@ -108,8 +108,8 @@ public class CartService {
         }
     }
 
-    private UpdateCartResponse buildUpdateCartResponse(List<CartItemEntity> userCartItems){
-        List<UpdateCartProductResponse> productResponses = new ArrayList<>();
+    private CartResponse buildUpdateCartResponse(List<CartItemEntity> userCartItems){
+        List<CartProductResponse> productResponses = new ArrayList<>();
         float totalWithoutDiscount = 0.0f;
         float grandTotal = 0.0f;
         int uniqueQuantity = 0;
@@ -123,7 +123,7 @@ public class CartService {
                 discountApplied = productEntity.getPrice()*(productEntity.getDiscount()/100);
             }
 
-            UpdateCartProductResponse productResponse = UpdateCartProductResponse.builder()
+            CartProductResponse productResponse = CartProductResponse.builder()
                     .quantity(cartItem.getQuantity())
                     .productId(productEntity.getId())
                     .name(productEntity.getName())
@@ -142,7 +142,7 @@ public class CartService {
             productResponses.add(productResponse);
         }
 
-        return UpdateCartResponse.builder()
+        return CartResponse.builder()
                 .products(productResponses)
                 .totalWithoutDiscount(totalWithoutDiscount)
                 .grandTotal(grandTotal)
@@ -152,6 +152,11 @@ public class CartService {
     }
 
 
+    public CartResponse getCart(String email) {
+        UserEntity user = userRepository.findByEmail(email);
+        List<CartItemEntity> userCartItems = cartRepository.findByUserEntity(user);
+        return buildUpdateCartResponse(userCartItems);
+    }
 
     public HashMap<Integer, Integer> getProductVsQuantityInCartByUserEmail(String userEmail){
         if (userEmail==null || userEmail.isEmpty()){
