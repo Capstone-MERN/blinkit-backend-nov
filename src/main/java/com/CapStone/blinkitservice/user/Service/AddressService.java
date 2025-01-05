@@ -34,7 +34,6 @@ public class AddressService {
         updateAddressDetails(addressBookEntity,addressRequest);
 
         addressBookRepository.save(addressBookEntity);
-        System.out.println("saved Success-==========================>");
         return buildResponse(addressBookEntity);
     }
 
@@ -68,10 +67,10 @@ public class AddressService {
 
     private AddressResponse buildResponse(AddressBookEntity addressBookEntity){
         return AddressResponse.builder()
+                .id(addressBookEntity.getId())
                 .addressLine1(addressBookEntity.getAddressLine1())
                 .addressLine2(addressBookEntity.getAddressLine2())
                 .addressLine3(addressBookEntity.getAddressLine3())
-                .message("Update address details success")
                 .longitude(addressBookEntity.getLongitude())
                 .latitude(addressBookEntity.getLatitude())
                 .build();

@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressResponse {
-    String message;
+    Integer id;
     float latitude;
     float longitude;
     String addressLine1;
