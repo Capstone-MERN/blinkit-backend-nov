@@ -20,7 +20,6 @@ public class CollectionsController {
 
     @GetMapping("/getActiveCollections")
     public ResponseEntity<GenericResponse> getActiveCollections(@AuthenticationPrincipal String userEmail){
-
         try {
             CollectionsResponse response = collectionsService.getActiveCollections(userEmail);
             return new ResponseEntity<>(response, HttpStatus.OK);

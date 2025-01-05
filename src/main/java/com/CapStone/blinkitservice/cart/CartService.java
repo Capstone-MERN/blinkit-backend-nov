@@ -159,7 +159,7 @@ public class CartService {
     }
 
     public HashMap<Integer, Integer> getProductVsQuantityInCartByUserEmail(String userEmail){
-
+        // TODO: handle below statement properly
         if (userEmail==null || userEmail.isEmpty() || userEmail.equals("anonymousUser")){
             return new HashMap<>();
         }
