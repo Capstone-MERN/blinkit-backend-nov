@@ -11,7 +11,7 @@ public class AddressTransformer {
                 .addressLine3(addressRequest.getAddressLine3())
                 .longitude(addressRequest.getLongitude())
                 .latitude(addressRequest.getLatitude())
-                .phone_no(addressRequest.getPhone_no())
+                .phone_no(addressRequest.getPhoneNo())
                 .build();
     }
 }

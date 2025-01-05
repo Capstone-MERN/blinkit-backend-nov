@@ -151,10 +151,9 @@ public class CartService {
                 .build();
     }
 
-
-
     public HashMap<Integer, Integer> getProductVsQuantityInCartByUserEmail(String userEmail){
-        if (userEmail==null || userEmail.isEmpty()){
+
+        if (userEmail==null || userEmail.isEmpty() || userEmail.equals("anonymousUser")){
             return new HashMap<>();
         }
 

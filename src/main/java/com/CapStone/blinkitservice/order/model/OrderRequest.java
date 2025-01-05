@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class OrderRequest {
 
-    int addressId;
+    Integer addressId;
 
     long timestamp;
 

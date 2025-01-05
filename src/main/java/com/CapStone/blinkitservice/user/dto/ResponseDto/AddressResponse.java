@@ -1,6 +1,19 @@
 package com.CapStone.blinkitservice.user.dto.ResponseDto;
 
-public class AddressResponse {
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-    String name;
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class AddressResponse {
+    String message;
+    float latitude;
+    float longitude;
+    String addressLine1;
+    String addressLine2;
+    String addressLine3;
+
 }
