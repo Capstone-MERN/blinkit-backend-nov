@@ -15,238 +15,196 @@ https://blinkit-service.onrender.com
 
 ### Feature - Authentication
 
-#### 1. **POST /auth/signin**
+## POST /auth/signin
 
-- **Request**:  
-    - **Request Type**: `@RequestBody`  
-    - **Request Object**: `SigninRequest`  
-    - **Request Payload**:
-        ```json
-        {
-          "email" : "abcd@gmail.com",
-          "password" : "abcd"
-        }
-        ```
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `SignInResponse`  
-        - **Response Body**:  
-            ```json
-            { 
-                "message" : "Login success",
-                "token" : "$generated_token"
-            }
-            ```
+### Request
+```json
+{
+  "email" : "abcd@gmail.com",
+  "password" : "abcd"
+}
+```
+### Response 
+#### Success ( 200 )
+```json
+{ 
+    "message" : "Login success",
+    "token" : "$generated_token"
+}
+```
 
-    - **catch block**:  
-        - **Response Code**: `401`  
-        - **Response Object**: `String`  
-        - **Response Body**: "Invalid credentials"
+#### BadRequest ( 400 )
+```json
+{
+  "message": "Invalid credentials",
+  "statusCode": 400
+}
+```
 
-#### 2. **POST /auth/signup**
+#### Internal Server Error ( 500 )
+```json 
+{ 
+    "message" : "Sorry, sign up failed",
+    "statusCode" : "500"
+}
+```
 
-- **Request**:  
-    - **Request Type**: `@RequestBody`  
-    - **Other Annotations**: `@Valid`  
-    - **Request Object**: `SignupRequest`  
-    - **Request Payload**:
-        ```json
-        {
-           "name" : "abcd",
-           "password" : "abcd",
-           "email" : "abcd1234@gmail.com",
-           "mobileNumber" : "9876543210"
-        }
-        ```
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `201`  
-        - **Response Object**: `SignupResponse`  
-        - **Response Body**:  
-            ```json
-            { 
-                "message" : "Successfully signed up"
-            }
-            ```
+## POST /auth/signup
 
-    - **catch block - Exception Handler - MethodArgumentNotValidException**:  
-        - **Response Code**: `400`  
-        - **Response Object**: `SignupResponse`  
-        - **Response Body**:  
-            ```json 
-            { 
-                "message" : "Signup failed: <field name> must be <validation credential>"
-            }
-            ```
-
-    - **catch block - DataIntegrityViolationException**:  
-        - **Response Code**: `400`  
-        - **Response Object**: `NetworkErrorResponse`  
-        - **Response Body**:  
-            ```json 
-            {
-                "message" : "Signup failed: Given mobile number already exist. (or) Signup failed: Given email already exist. (or) Signup failed: Given details already exist.",
-                "statusCode" : "400"
-            }
-            ```
-
-    - **catch block - Exception**:  
-        - **Response Code**: `500`  
-        - **Response Object**: `NetworkErrorResponse`  
-        - **Response Body**:  
-            ```json 
-            { 
-                "message" : "Sorry, sign up failed",
-                "statusCode" : "500"
-            }
-            ```
+### Request
+#### Request Payload
+```json
+{
+   "name" : "abcd",
+   "password" : "abcd",
+   "email" : "abcd1234@gmail.com",
+   "mobileNumber" : "9876543210"
+}
+```
+### Response
+#### Success ( 201 )
+```json
+{ 
+    "message" : "Successfully signed up"
+}
+```
+#### Bad Request ( 400 )
+```json 
+{ 
+    "message" : "Signup failed: <field name> must be <validation credential>"
+}
+```
+#### Internal Server Error ( 500 )
+```json 
+{ 
+    "message" : "Sorry, sign up failed",
+    "statusCode" : "500"
+}
+```
 
 ### Feature - Cart
 
-#### 1. **PUT /api/cart/update**
+## PUT /api/cart/update
 
-- **Request**:  
-    - **Request Type**: `@RequestBody`  
-    - **Other Annotations**: `@AuthenticationPrincipal`  
-    - **Request Object**: `CartRequest`  
-    - **Request Payload**:  
-        ```json
+### Request
+#### Request Payload 
+```json
+{
+    "items": [
         {
-            "items": [
-                {
-                    "productId": 1,
-                    "quantity": 2
-                },
-                {
-                    "productId": 2,
-                    "quantity": 3
-                }
-            ]
+            "productId": 1,
+            "quantity": 2
+        },
+        {
+            "productId": 2,
+            "quantity": 3
         }
-        ```
+    ]
+}
+```
 
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `GenericResponse -> CartResponse`  
-        - **Response Body**:  
-            ```json
-            {
-                "products": [
-                    { "productId": 1, "name":"Amul Milk", "imageUrl":"www.abc.com/abc.jpg", "originalPrice:":100, "discountedPrice":85, "maxOrderLimit":10, "description":"xyz", "quantity": 2, "isAvailable":"true"},
-                    { "productId": 2, "name":"Amul Butter", "imageUrl":"www.abc.com/abc.jpg", "originalPrice:":80, "discountedPrice":65, "maxOrderLimit":8, "description":"xyz", "quantity": 3, "isAvailable":"true"}
-                ],
-                "totalWithoutDiscount": 100.00,
-                "grandTotal": 90.00,
-                "uniqueQuantity": 5,
-                "totalQuantity": 10
-            }
-            ```
+### Response
+#### Success ( 200 )
+```json
+{
+    "products": [
+        { "productId": 1, "name":"Amul Milk", "imageUrl":"www.abc.com/abc.jpg", "originalPrice:":100, "discountedPrice":85, "maxOrderLimit":10, "description":"xyz", "quantity": 2, "isAvailable":"true"},
+        { "productId": 2, "name":"Amul Butter", "imageUrl":"www.abc.com/abc.jpg", "originalPrice:":80, "discountedPrice":65, "maxOrderLimit":8, "description":"xyz", "quantity": 3, "isAvailable":"true"}
+    ],
+    "totalWithoutDiscount": 100.00,
+    "grandTotal": 90.00,
+    "uniqueQuantity": 5,
+    "totalQuantity": 10
+}
+```
 
-    - **catch block - InvalidCartPayloadResponse**:  
-        - **Response Code**: `400`  
-        - **Response Object**: `GenericResponse -> GenericErrorResponse`  
-        - **Response Body**:  
-            ```json 
-            {
-                "error": "e.getLocalizedMessage()"
-            }
-            ```
+#### BadRequest (400)
+**If invalid payload is sent**
+```json 
+{
+    "error": "e.getLocalizedMessage()"
+}
+```
+#### Internal Server Error ( 500 )
+```json 
+{ 
+    "message" : "Sorry, sign up failed",
+    "statusCode" : "500"
+}
+```
 
-    - **catch block - Exception**:  
-        - **Response Code**: `500`  
-        - **Response Object**: `GenericResponse -> GenericErrorResponse`  
-        - **Response Body**:  
-            ```json 
-            { 
-                "error": "e.getLocalizedMessage()"
-            }
-            ```
+## GET /api/cart/get
+Private API
 
-#### 2. **GET /api/cart/get**
+### Request
+#### Request Header should contain token
 
-- **Request**:  
-    - **Request Type**: `N/A`  
-    - **Other Annotations**: `@AuthenticationPrincipal`  
-    - **Request Object**: `N/A`  
-    - **Request Payload**: `N/A`  
+```json
+{
+  "Authorization": "Bearer ${token}"
+}
+```
+No Payload required
 
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `GenericResponse -> CartResponse`  
-        - **Response Body**:  
-            ```json
-            {
-                "products": [
-                    { "productId": 1, "quantity": 2 },
-                    { "productId": 2, "quantity": 3 }
-                ],
-                "totalWithoutDiscount": 100.00,
-                "grandTotal": 90.00,
-                "uniqueQuantity": 5,
-                "totalQuantity": 10
-            }
-            ```
-
-    - **catch block - Exception**:  
-        - **Response Code**: `500`  
-        - **Response Object**: `GenericResponse -> GenericErrorResponse`  
-        - **Response Body**:  
-            ```json 
-            { 
-                "error": "e.getLocalizedMessage()"
-            }
-            ```
+### Response
+#### Success ( 200 )
+```json
+{
+    "products": [
+        { "productId": 1, "quantity": 2 },
+        { "productId": 2, "quantity": 3 }
+    ],
+    "totalWithoutDiscount": 100.00,
+    "grandTotal": 90.00,
+    "uniqueQuantity": 5,
+    "totalQuantity": 10
+}
+```
+#### Internal Server Error ( 500 )
+```json 
+{ 
+    "message" : "Sorry, sign up failed",
+    "statusCode" : "500"
+}
+```
 
 ### Feature - Collections
 
-#### 1. **GET /auth/collections/getActiveCollections**
+## GET /auth/collections/getActiveCollections
 
-- **Request**:  
-    - **Request Type**: `N/A`  
-    - **Other Annotations**: `@AuthenticationPrincipal`  
-    - **Request Object**: `N/A`  
-    - **Request Payload**: `N/A`
-
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `GenericResponse -> CollectionsResponse`  
-        - **Response Body**:  
-            ```json
-            {
-                "collections": [
-                    {
-                        "collectionId": 1,
-                        "collectionTitle": "Spring Collection",
-                        "products": [
-                            { "productId": 1, "productName": "Product A" },
-                            { "productId": 2, "productName": "Product B" }
-                        ]
-                    },
-                    {
-                        "collectionId": 2,
-                        "collectionTitle": "Winter Collection",
-                        "products": [
-                            { "productId": 3, "productName": "Product C" },
-                            { "productId": 4, "productName": "Product D" }
-                        ]
-                    }
-                ]
-            }
-            ```
-
-    - **catch block - Exception**:  
-        - **Response Code**: `500`  
-        - **Response Object**: `GenericResponse -> GenericErrorResponse`  
-        - **Response Body**:  
-            ```json 
-            { 
-                "error": "e.getLocalizedMessage()"
-            }
-            ```
+### Request
+No payload required
+### Response
+#### Success ( 200 )
+```json
+{
+    "collections": [
+        {
+            "collectionId": 1,
+            "collectionTitle": "Spring Collection",
+            "products": [
+                { "productId": 1, "productName": "Product A" },
+                { "productId": 2, "productName": "Product B" }
+            ]
+        },
+        {
+            "collectionId": 2,
+            "collectionTitle": "Winter Collection",
+            "products": [
+                { "productId": 3, "productName": "Product C" },
+                { "productId": 4, "productName": "Product D" }
+            ]
+        }
+    ]
+}
+```
+#### Internal Server Error ( 500 )
+```json 
+{ 
+    "message" : "Sorry, sign up failed",
+    "statusCode" : "500"
+}
+```
 
 ### Feature - Order
 
@@ -300,101 +258,117 @@ https://blinkit-service.onrender.com
 
 ### Feature - Category
 
-#### 1. **GET /category/all**
+## GET /category/all
 
-- **Request**:  
-    - **Request Type**: `N/A`  
-    - **Other Annotations**: `N/A`  
-    - **Request Object**: `N/A`   
-    - **Request Payload**: `N/A`  
+### Request
+**No Payload required**
+### Response
+#### Success (200)
+```json
+[
+  {
+    "categoryId": 1,
+    "imageUrl": "www.sample.com/sample.jpg",
+    "title": "Category A",
+    "defaultSubcategory": {
+      "id": 1,
+      "title": "Sub Category A"
+    }
+  }
+]
+```
 
-- **Response**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `List<CategoryResponse>`  
-        - **Response Body**:  
-            ```json
-            {
-                "categoryId": 1,
-                "imageUrl": "www.sample.com/sample.jpg",
-                "title": "Category A",
-                "defaultSubcategory": {
-                      "id": 1,
-                      "title": "Sub Category A"
-                }
-            }
-            ```
+#### Internal Server Error ( 500 )
+```json 
+{ 
+    "message" : "Sorry, sign up failed",
+    "statusCode" : "500"
+}
+```
+
 
 ### Feature - Product
 
-#### 1. **POST /products/v1/search**
+## POST /products/v1/search
 
-- **Request**:  
-    - **Request Type**: `@RequestBody`  
-    - **Other Annotations**: `@AuthenticationPrincipal`  
-    - **Request Object**: `ProductSearchRequestDto`  
-    - **Request Payload**:  
-        ```json
-        {
-            "query": "Amul",
-            "categoryId": "1",
-            "subCategoryId": "2",
-            "filter": "RELEVANCE"
+### Request
+```json
+{
+    "query": "Amul",
+    "categoryId": "1",
+    "subCategoryId": "2",
+    "filter": "RELEVANCE"
+}
+```
+
+### Response
+#### Success ( 200 )
+```json
+{
+    "hasNextPage": "false",
+    "pageNumber": "1",
+    "size": "10",
+    "products": [
+        { 
+          "title": "Amul Milk", 
+          "price:":85, 
+          "imageUrl":"www.abc.com/abc.jpg", 
+          "maxQuantity":10,
+          "quantity": 2,
+          "description":"xyz", 
+          "discountPercent":15, 
+          "originalPrice": 100
+        },
+        { 
+          "title": "Amul Butter", 
+          "price:":85, 
+          "imageUrl":"www.abc.com/abc.jpg", 
+          "maxQuantity":10, 
+          "quantity": 2, 
+          "description":"xyz", 
+          "discountPercent":15, 
+          "originalPrice": 100
         }
-        ```
+    ]
+}
+```
 
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `ProductSearchResponseDto`  
-        - **Response Body**:  
-            ```json
-            {
-                "hasNextPage": "false",
-                "pageNumber": "1",
-                "size": "10",
-                "products": [
-                    { "title": "Amul Milk", "price:":85, "imageUrl":"www.abc.com/abc.jpg", "maxQuantity":10, "quantity": 2, "description":"xyz", "discountPercent":15, "originalPrice": 100},
-                    { "title": "Amul Butter", "price:":85, "imageUrl":"www.abc.com/abc.jpg", "maxQuantity":10, "quantity": 2, "description":"xyz", "discountPercent":15, "originalPrice": 100},
-                ],
-            }
-            ```
+## GET /products/v1/details?id=3893
 
-#### 2. **GET /products/v1/details**
+### Request
+No payload required
 
-- **Request**:  
-    - **Request Type**: `@RequestParam`  
-    - **Other Annotations**: `@AuthenticationPrincipal`  
-    - **Request Object**: `N/A`  
-    - **Request Payload**: `/details?id=1`  
-
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `200`  
-        - **Response Object**: `Object`  
-        - **Response Body**:  
-            ```json
-            {
-                "id": 1,
-                "title": "Amul Milk",
-                "description": "Milk Item",
-                "gallery": [
-                    "www.abc.com/amul1.jpg", "www.abc.com/amul2.jpg", "www.abc.com/amul3.jpg", "www.abc.com/amul4.jpg",
-               ],
-                "cartQuantity": 1,
-                "maxQuantityLimit": 10,
-                "productDetails": [
-                    { {"Ingredients":"Pure Cow Milk"}, {"Chemical Free":"Yes"}, {"Storage Condition":"Under 10 degrees"}, {"Expiry":"5 Days from Packing"} },
-                ],
-            }
-            ```
-    - **catch block - Exception**:  
-        - **Response Code**: `400`  
-        - **Response Object**: `Object -> String`  
-        - **Response Body**: `$ error message`
+### Response ( 200 )
+```json
+{
+    "id": 1,
+    "title": "Amul Milk",
+    "description": "Milk Item",
+    "gallery": [
+        "www.abc.com/amul1.jpg", "www.abc.com/amul2.jpg", "www.abc.com/amul3.jpg", "www.abc.com/amul4.jpg",
+   ],
+    "cartQuantity": 1,
+    "maxQuantityLimit": 10,
+    "productDetails": [
+      {"Ingredients":"Pure Cow Milk"}, 
+      {"Chemical Free":"Yes"}, 
+      {"Storage Condition":"Under 10 degrees"}, 
+      {"Expiry":"5 Days from Packing"}
+    ]
+}
+```
+#### BadRequest ( 400 )
+TODO: implement this response
+**If invalid productId is sent**
+```json 
+{
+    "error": "e.getLocalizedMessage()"
+}
+```
      
 
 ### Feature - Address
-
+TODO: complete this
 #### 1. **POST /address/v1**
 
 - **Request**:  
@@ -413,15 +387,3 @@ https://blinkit-service.onrender.com
             "phoneNo": "9876543210"
         }
         ```
-
-- **Response**:  
-    - **try block**:  
-        - **Response Code**: `N/A`  
-        - **Response Object**: `AddressBookEntity`  
-        - **Response Body**:  
-            ```json
-            {
- 
-            }
-            ```
-
