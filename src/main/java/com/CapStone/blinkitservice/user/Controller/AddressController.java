@@ -1,8 +1,8 @@
 package com.CapStone.blinkitservice.user.Controller;
 
 import com.CapStone.blinkitservice.user.Service.AddressService;
-import com.CapStone.blinkitservice.user.dto.AddressRequest;
-import com.CapStone.blinkitservice.user.dto.ResponseDto.AddressResponse;
+import com.CapStone.blinkitservice.user.model.AddressRequest;
+import com.CapStone.blinkitservice.user.model.AddressResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

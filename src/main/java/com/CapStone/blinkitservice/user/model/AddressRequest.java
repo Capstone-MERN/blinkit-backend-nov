@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.user.dto;
+package com.CapStone.blinkitservice.user.model;
 
 import lombok.Data;
 import lombok.Getter;

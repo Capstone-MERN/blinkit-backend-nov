@@ -10,9 +10,9 @@ import com.CapStone.blinkitservice.order.enums.DeliveryStatus;
 import com.CapStone.blinkitservice.order.model.OrderRequest;
 import com.CapStone.blinkitservice.order.model.OrderResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
-import com.CapStone.blinkitservice.user.AddressBookRepository;
+import com.CapStone.blinkitservice.user.repository.AddressBookRepository;
 import com.CapStone.blinkitservice.user.Service.AddressService;
-import com.CapStone.blinkitservice.user.UserRepository;
+import com.CapStone.blinkitservice.user.repository.UserRepository;
 import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.transaction.Transactional;
@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class OrderService {

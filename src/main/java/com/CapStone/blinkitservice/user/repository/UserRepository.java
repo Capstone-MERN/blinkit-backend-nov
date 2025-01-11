@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.user;
+package com.CapStone.blinkitservice.user.repository;
 
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

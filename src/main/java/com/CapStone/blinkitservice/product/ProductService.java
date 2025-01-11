@@ -8,7 +8,9 @@ import com.CapStone.blinkitservice.product.enums.SearchFilters;
 import com.CapStone.blinkitservice.product.transformer.ProductTransformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -31,7 +33,18 @@ public class ProductService {
 
     public ProductSearchResponse categorySearch(Integer subCategoryId, SearchFilters filter, Pageable pageable, String userEmail){
 
-        Page<ProductEntity> products = productRepository.findAllProductsByFilter(subCategoryId, filter.name(), pageable);
+        Sort sort = switch (filter) {
+            case SearchFilters.PRICE_HIGH_TO_LOW -> Sort.by(Sort.Order.desc("price"));
+            case SearchFilters.PRICE_LOW_TO_HIGH -> Sort.by(Sort.Order.asc("price"));
+            case SearchFilters.DISCOUNT -> Sort.by(Sort.Order.desc("discount"));
+            case SearchFilters.A_TO_Z -> Sort.by(Sort.Order.asc("name"));
+            default ->Sort.by(Sort.Order.asc("name")); // Default to "RELEVANCE"
+        };
+
+        Pageable customPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        Page<ProductEntity> products=productRepository.findBySubCategoryEntityId(subCategoryId,customPageable);
+
         HashMap<Integer, Integer> quantities =  cartService.getProductVsQuantityInCartByUserEmail(userEmail);
         return ProductTransformer.createProductSearchResponse(products, quantities);
 

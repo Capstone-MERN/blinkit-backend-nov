@@ -59,7 +59,7 @@ public class ProductEntity {
     SubCategoryEntity subCategoryEntity;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
+    @JoinColumn(name = "brand_id")
     BrandEntity brandEntity;
 
     @Column(columnDefinition = "json")

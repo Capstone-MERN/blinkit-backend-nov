@@ -6,7 +6,7 @@ import com.CapStone.blinkitservice.configuration.jwt.JwtManager;
 import com.CapStone.blinkitservice.controlleradvice.exceptions.BadRequestException;
 import com.CapStone.blinkitservice.controlleradvice.exceptions.InternalServerException;
 import com.CapStone.blinkitservice.user.UserConstraints;
-import com.CapStone.blinkitservice.user.UserRepository;
+import com.CapStone.blinkitservice.user.repository.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import com.CapStone.blinkitservice.auth.model.SignupRequest;
 import org.springframework.dao.DataIntegrityViolationException;

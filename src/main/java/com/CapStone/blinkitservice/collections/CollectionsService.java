@@ -6,7 +6,7 @@ import com.CapStone.blinkitservice.collections.model.CollectionResponse;
 import com.CapStone.blinkitservice.collections.model.CollectionsResponse;
 import com.CapStone.blinkitservice.product.model.ProductResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
-import com.CapStone.blinkitservice.user.UserRepository;
+import com.CapStone.blinkitservice.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -9,7 +9,7 @@ import com.CapStone.blinkitservice.common.error.exception.InvalidCartPayloadResp
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.model.ProductMaxOrderProjection;
 import com.CapStone.blinkitservice.product.ProductRepository;
-import com.CapStone.blinkitservice.user.UserRepository;
+import com.CapStone.blinkitservice.user.repository.UserRepository;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

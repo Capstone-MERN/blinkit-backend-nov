@@ -1,11 +1,10 @@
 package com.CapStone.blinkitservice.user.Service;
 
 import com.CapStone.blinkitservice.controlleradvice.exceptions.BadRequestException;
-import com.CapStone.blinkitservice.user.AddressBookRepository;
-import com.CapStone.blinkitservice.user.Repository.AddressRepository;
-import com.CapStone.blinkitservice.user.UserRepository;
-import com.CapStone.blinkitservice.user.dto.AddressRequest;
-import com.CapStone.blinkitservice.user.dto.ResponseDto.AddressResponse;
+import com.CapStone.blinkitservice.user.repository.AddressBookRepository;
+import com.CapStone.blinkitservice.user.repository.UserRepository;
+import com.CapStone.blinkitservice.user.model.AddressRequest;
+import com.CapStone.blinkitservice.user.model.AddressResponse;
 import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import java.util.Optional;
 @Service
 public class AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired

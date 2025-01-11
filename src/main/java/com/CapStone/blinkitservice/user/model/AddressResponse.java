@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.user.dto.ResponseDto;
+package com.CapStone.blinkitservice.user.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
