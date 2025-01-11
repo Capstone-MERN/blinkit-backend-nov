@@ -1,11 +1,17 @@
 package com.CapStone.blinkitservice.controlleradvice;
 
+import com.CapStone.blinkitservice.common.error.GenericErrorResponse;
+import com.CapStone.blinkitservice.common.response.GenericResponse;
 import com.CapStone.blinkitservice.controlleradvice.exceptions.BadRequestException;
 import com.CapStone.blinkitservice.controlleradvice.exceptions.InternalServerException;
 import com.CapStone.blinkitservice.controlleradvice.response.NetworkErrorResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,5 +31,14 @@ public class GlobalExceptionHandler {
                 .statusCode(exception.getStatusCode())
                 .build();
         return ResponseEntity.internalServerError().body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<GenericResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        List<String> errorMessages = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.badRequest().body(new GenericErrorResponse<>(errorMessages));
     }
 }

@@ -2,26 +2,27 @@ package com.CapStone.blinkitservice.user.Controller;
 
 import com.CapStone.blinkitservice.user.Service.AddressService;
 import com.CapStone.blinkitservice.user.dto.AddressRequest;
-import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
-import lombok.RequiredArgsConstructor;
+import com.CapStone.blinkitservice.user.dto.ResponseDto.AddressResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/auth/address/v1")
-@RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class AddressController {
 
-    private final AddressService addressService;
+    @Autowired
+    private AddressService addressService;
 
-    @PostMapping
-    public AddressBookEntity addUserAddress(@AuthenticationPrincipal String email, @RequestBody AddressRequest addressRequest){
-        AddressBookEntity response = addressService.addOrUpdateAddress(email, addressRequest);
+    @PostMapping("/update-address")
+    public ResponseEntity<AddressResponse> addUserAddress(@AuthenticationPrincipal String email, @RequestBody AddressRequest addressRequest){
 
-        return response;
+        AddressResponse response = addressService.addOrUpdateAddress(email, addressRequest);
+        return ResponseEntity.ok().body(response);
     }
 
 }

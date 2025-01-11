@@ -3,6 +3,7 @@ package com.CapStone.blinkitservice.order;
 import com.CapStone.blinkitservice.cart.CartRepository;
 import com.CapStone.blinkitservice.cart.entity.CartItemEntity;
 import com.CapStone.blinkitservice.common.StringConstants;
+import com.CapStone.blinkitservice.controlleradvice.exceptions.BadRequestException;
 import com.CapStone.blinkitservice.order.entity.OrderEntity;
 import com.CapStone.blinkitservice.order.entity.OrderItemEntity;
 import com.CapStone.blinkitservice.order.enums.DeliveryStatus;
@@ -10,6 +11,7 @@ import com.CapStone.blinkitservice.order.model.OrderRequest;
 import com.CapStone.blinkitservice.order.model.OrderResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.user.AddressBookRepository;
+import com.CapStone.blinkitservice.user.Service.AddressService;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,28 +39,25 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private AddressService addressService;
+
 
     @Transactional
     public OrderResponse placeOrder(OrderRequest orderRequest,String email){
 
         UserEntity userEntity=userRepository.findByEmail(email);
 
-        Optional<AddressBookEntity> addressBookEntityResult=addressBookRepository.findById(orderRequest.getAddressId());
-
-        if(addressBookEntityResult.isEmpty()){
-            throw new RuntimeException("Invalid addressId "+orderRequest.getAddressId());
+        if(orderRequest.getAddressId()==null){
+            throw new BadRequestException("AddressId can not be null");
         }
 
-        AddressBookEntity addressBookEntity=addressBookEntityResult.get();
-
-        if(!addressBookEntity.getUserEntity().equals(userEntity)){
-            throw new RuntimeException("The given address is not in your saved addresses");
-        }
+        AddressBookEntity addressBookEntity=addressService.validateUserVsAddress(userEntity,orderRequest.getAddressId());
 
         List<CartItemEntity> cartItems=cartRepository.findByUserEntity(userEntity);
 
         if(cartItems.isEmpty()){
-            throw new RuntimeException("Sorry,Unable to placing order because your cart is empty");
+            throw new BadRequestException("Sorry,Unable to placing order because your cart is empty");
         }
 
         OrderEntity orderEntity=OrderEntity.builder()

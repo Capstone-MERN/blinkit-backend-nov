@@ -25,20 +25,8 @@ public class OrderController {
    @PostMapping("/place-order")
    public ResponseEntity<GenericResponse> placeOrder(@Valid @RequestBody OrderRequest orderRequest, @AuthenticationPrincipal String email){
 
-        try{
-            OrderResponse response= orderService.placeOrder(orderRequest,email);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new GenericErrorResponse<>(e.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
-        }
-    }
+       OrderResponse response= orderService.placeOrder(orderRequest,email);
+       return ResponseEntity.ok(response);
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<GenericResponse> handleValidationException(MethodArgumentNotValidException ex) {
-        List<String> errorMessages = ex.getBindingResult().getFieldErrors().stream()
-                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.badRequest().body(new GenericErrorResponse<>(errorMessages));
     }
 }

@@ -1,63 +1,79 @@
 package com.CapStone.blinkitservice.user.Service;
 
+import com.CapStone.blinkitservice.controlleradvice.exceptions.BadRequestException;
+import com.CapStone.blinkitservice.user.AddressBookRepository;
 import com.CapStone.blinkitservice.user.Repository.AddressRepository;
-import com.CapStone.blinkitservice.user.Transformer.AddressTransformer;
 import com.CapStone.blinkitservice.user.UserRepository;
 import com.CapStone.blinkitservice.user.dto.AddressRequest;
+import com.CapStone.blinkitservice.user.dto.ResponseDto.AddressResponse;
 import com.CapStone.blinkitservice.user.entity.AddressBookEntity;
 import com.CapStone.blinkitservice.user.entity.UserEntity;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 
 @Service
-@RequiredArgsConstructor
 public class AddressService {
-    private final AddressRepository addressRepository;
-    private final UserRepository userRepository;
 
-    public AddressBookEntity addOrUpdateAddress(String email, AddressRequest addressRequest) {
-        UserEntity user = userRepository.findByEmail(email);
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AddressBookRepository addressBookRepository;
+
+    public AddressResponse addOrUpdateAddress(String email, AddressRequest addressRequest) {
+
         Integer addressId = addressRequest.getAddressId();
+        UserEntity userEntity=userRepository.findByEmail(email);
 
-        return (addressId != null)
-                ? updateAddress(addressId, addressRequest)
-                : createAddress(user, addressRequest);
+        AddressBookEntity addressBookEntity=validateUserVsAddress(userEntity,addressId);
+
+        updateAddressDetails(addressBookEntity,addressRequest);
+
+        addressBookRepository.save(addressBookEntity);
+        return buildResponse(addressBookEntity);
     }
 
-    private AddressBookEntity updateAddress(Integer addressId, AddressRequest addressRequest) {
-        AddressBookEntity address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new RuntimeException("Invalid address ID"));
+    public AddressBookEntity validateUserVsAddress(UserEntity userEntity,Integer addressId){
 
-        return saveAddress(updateAddressDetails(address, addressRequest));
+        if(addressId==null){
+            return AddressBookEntity.builder()
+                    .userEntity(userEntity).build();
+        }
+        Optional<AddressBookEntity> addressBookEntityResult=addressBookRepository.findById(addressId);
+
+        if(addressBookEntityResult.isEmpty()){
+            throw new BadRequestException("Invalid addressId "+addressId);
+        }
+        AddressBookEntity addressBookEntity=addressBookEntityResult.get();
+
+        if(!addressBookEntity.getUserEntity().equals(userEntity)){
+            throw new BadRequestException("The given address is not in your saved addresses");
+        }
+        return addressBookEntity;
     }
 
-    private AddressBookEntity updateAddressDetails(AddressBookEntity address, AddressRequest addressRequest) {
+    private void updateAddressDetails(AddressBookEntity address, AddressRequest addressRequest) {
         address.setAddressLine1(addressRequest.getAddressLine1());
         address.setAddressLine2(addressRequest.getAddressLine2());
         address.setAddressLine3(addressRequest.getAddressLine3());
         address.setLatitude(addressRequest.getLatitude());
         address.setLongitude(addressRequest.getLongitude());
-        address.setPhone_no(addressRequest.getPhone_no());
-        return address;
+        address.setPhone_no(addressRequest.getPhoneNo());
     }
 
-    private AddressBookEntity createAddress(UserEntity user, AddressRequest addressRequest) {
-        AddressBookEntity address = AddressTransformer.addressRequestToAddress(addressRequest);
-
-        if (user.getAddresses() == null) {
-            user.setAddresses(new ArrayList<>());
-        }
-        address.setUserEntity(user);
-        user.getAddresses().add(address);
-
-        userRepository.save(user); // Save the user with the new address
-        return saveAddress(address);
+    private AddressResponse buildResponse(AddressBookEntity addressBookEntity){
+        return AddressResponse.builder()
+                .id(addressBookEntity.getId())
+                .addressLine1(addressBookEntity.getAddressLine1())
+                .addressLine2(addressBookEntity.getAddressLine2())
+                .addressLine3(addressBookEntity.getAddressLine3())
+                .longitude(addressBookEntity.getLongitude())
+                .latitude(addressBookEntity.getLatitude())
+                .build();
     }
 
-    private AddressBookEntity saveAddress(AddressBookEntity address) {
-        return addressRepository.save(address);
-    }
 }

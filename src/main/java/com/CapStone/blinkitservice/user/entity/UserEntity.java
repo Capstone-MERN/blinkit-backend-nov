@@ -38,8 +38,5 @@ public class UserEntity {
     @Column(name = "mobile_number", nullable = false, unique =true, length = 10)
     String mobileNumber;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<AddressBookEntity> addresses;
 
 }
