@@ -1,9 +1,9 @@
 package com.CapStone.blinkitservice.product.transformer;
 
-import com.CapStone.blinkitservice.product.dto.MetaData;
-import com.CapStone.blinkitservice.product.dto.ProductDetailResponseDto;
-import com.CapStone.blinkitservice.product.dto.ProductResponseDto;
-import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
+import com.CapStone.blinkitservice.product.model.MetaData;
+import com.CapStone.blinkitservice.product.model.ProductDetailResponse;
+import com.CapStone.blinkitservice.product.model.ProductResponse;
+import com.CapStone.blinkitservice.product.model.ProductSearchResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +15,11 @@ import java.util.stream.Collectors;
 public class ProductTransformer {
 
 
-    public static List<ProductResponseDto> productToProductResponse(Page<ProductEntity> products, HashMap<Integer, Integer> quantities) {
+    public static List<ProductResponse> productToProductResponse(Page<ProductEntity> products, HashMap<Integer, Integer> quantities) {
 
         return products.getContent().stream()
-                .map(product -> ProductResponseDto.builder()
+                .map(product -> ProductResponse.builder()
+                        .productId(product.getId())
                         .title(product.getName())
                         .price(product.getPrice() * (100 - product.getDiscount()))
                         .imageUrl(product.getImageUrl())
@@ -32,9 +33,9 @@ public class ProductTransformer {
                 .collect(Collectors.toList());
     }
 
-    public static ProductSearchResponseDto createProductSearchResponse(Page<ProductEntity> products, HashMap<Integer, Integer> quantities){
+    public static ProductSearchResponse createProductSearchResponse(Page<ProductEntity> products, HashMap<Integer, Integer> quantities){
 
-        return ProductSearchResponseDto.builder()
+        return ProductSearchResponse.builder()
                 .products(productToProductResponse(products, quantities))
                 .size(products.getSize())
                 .pageNumber(products.getNumber())
@@ -42,10 +43,10 @@ public class ProductTransformer {
                 .build();
     }
 
-    public static ProductDetailResponseDto productToProductDetailResponse(ProductEntity product, int quantity) throws Exception {
+    public static ProductDetailResponse productToProductDetailResponse(ProductEntity product, int quantity) throws Exception {
 
         MetaData data = transformMetaData(product.getMetaData());
-        return ProductDetailResponseDto.builder()
+        return ProductDetailResponse.builder()
                 .id(product.getId())
                 .title(product.getName())
                 .description(product.getDescription())

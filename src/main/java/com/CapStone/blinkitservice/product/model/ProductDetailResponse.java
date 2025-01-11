@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.product.dto;
+package com.CapStone.blinkitservice.product.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductDetailResponseDto {
+public class ProductDetailResponse {
     int id;
     String title;
     String description;

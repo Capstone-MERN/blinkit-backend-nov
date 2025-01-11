@@ -1,6 +1,6 @@
 package com.CapStone.blinkitservice.collections.model;
 
-import com.CapStone.blinkitservice.product.dto.ProductResponseDto;
+import com.CapStone.blinkitservice.product.model.ProductResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +17,6 @@ public class CollectionResponse {
 
     String collectionTitle;
 
-    List<ProductResponseDto> products;
+    List<ProductResponse> products;
 
 }

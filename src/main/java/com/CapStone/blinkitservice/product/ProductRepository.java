@@ -35,17 +35,50 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
 
 
+//    @Query(value = """
+//    SELECT p.* FROM products p
+//    WHERE p.sub_category_id = :subCategoryId
+//    ORDER BY
+//        CASE WHEN :filter = 'RELEVANCE' THEN p.name END ASC,
+//        CASE WHEN :filter = 'PRICE_HIGH_TO_LOW' THEN p.price END DESC,
+//        CASE WHEN :filter = 'PRICE_LOW_TO_HIGH' THEN p.price END ASC,
+//        CASE WHEN :filter = 'DISCOUNT' THEN p.discount END DESC,
+//        CASE WHEN :filter = 'A_TO_Z' THEN p.name END ASC
+//    """, nativeQuery = true)
+//    Page<ProductEntity> findAllProductsByFilter(Integer subCategoryId,@Param("filter") String filter, Pageable pageable);
+
     @Query(value = """
-    SELECT p.* FROM products p
-    WHERE p.sub_category_id = :subCategoryId
+    SELECT *
+    FROM products
+    WHERE sub_category_id = :subCategoryId
     ORDER BY
-        CASE WHEN :filter = 'RELEVANCE' THEN p.name END ASC,
-        CASE WHEN :filter = 'PRICE_HIGH_TO_LOW' THEN p.price END DESC,
-        CASE WHEN :filter = 'PRICE_LOW_TO_HIGH' THEN p.price END ASC,
-        CASE WHEN :filter = 'DISCOUNT' THEN p.discount END DESC,
-        CASE WHEN :filter = 'A_TO_Z' THEN p.name END ASC
+        CASE
+            WHEN :filter = 'RELEVANCE' THEN name
+            ELSE NULL
+        END ASC,
+        CASE
+            WHEN :filter = 'PRICE_HIGH_TO_LOW' THEN price
+            ELSE NULL
+        END DESC,
+        CASE
+            WHEN :filter = 'PRICE_LOW_TO_HIGH' THEN price
+            ELSE NULL
+        END ASC,
+        CASE
+            WHEN :filter = 'DISCOUNT' THEN discount
+            ELSE NULL
+        END DESC,
+        CASE
+            WHEN :filter = 'A_TO_Z' THEN name
+            ELSE NULL
+        END ASC
     """, nativeQuery = true)
-    Page<ProductEntity> findAllProductsByFilter(Integer subCategoryId, String filter, Pageable pageable);
+    Page<ProductEntity> findAllProductsByFilter(
+            @Param("subCategoryId") Integer subCategoryId,
+            @Param("filter") String filter,
+            Pageable pageable
+    );
+
 
     @Query(value = "select p.id,p.max_order_limit from products p where p.id in(:productIds)",nativeQuery = true)
     List<ProductMaxOrderProjection> findMaxOrderLimitByProductIds(@Param("productIds") List<Integer> productIds);

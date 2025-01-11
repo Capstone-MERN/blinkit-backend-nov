@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.product.dto;
+package com.CapStone.blinkitservice.product.model;
 
 import com.CapStone.blinkitservice.product.enums.SearchFilters;
 import lombok.AccessLevel;
@@ -7,9 +7,9 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductSearchRequestDto {
+public class ProductSearchRequest {
     String query;
-    Integer categoryId;
+    Integer pageNumber;
     Integer subCategoryId;
     SearchFilters filter;
 }

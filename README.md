@@ -289,13 +289,13 @@ No payload required
 
 ### Feature - Product
 
-## POST /products/v1/search
+## POST /products/search
 
 ### Request
 ```json
 {
     "query": "Amul",
-    "categoryId": "1",
+    "pageNumber": "1",
     "subCategoryId": "2",
     "filter": "RELEVANCE"
 }
@@ -307,9 +307,10 @@ No payload required
 {
     "hasNextPage": "false",
     "pageNumber": "1",
-    "size": "10",
+    "size": "20",
     "products": [
         { 
+          "productId": 21,
           "title": "Amul Milk", 
           "price:":85, 
           "imageUrl":"www.abc.com/abc.jpg", 
@@ -319,7 +320,8 @@ No payload required
           "discountPercent":15, 
           "originalPrice": 100
         },
-        { 
+        {
+          "productId": 22,
           "title": "Amul Butter", 
           "price:":85, 
           "imageUrl":"www.abc.com/abc.jpg", 
@@ -333,7 +335,7 @@ No payload required
 }
 ```
 
-## GET /products/v1/details?id=3893
+## GET /products/details?id=3893
 
 ### Request
 No payload required

@@ -1,4 +1,4 @@
-package com.CapStone.blinkitservice.product.dto;
+package com.CapStone.blinkitservice.product.model;
 
 import lombok.AccessLevel;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package com.CapStone.blinkitservice.product;
 
 import com.CapStone.blinkitservice.cart.CartService;
-import com.CapStone.blinkitservice.product.dto.ProductDetailResponseDto;
-import com.CapStone.blinkitservice.product.dto.ProductSearchResponseDto;
+import com.CapStone.blinkitservice.product.model.ProductDetailResponse;
+import com.CapStone.blinkitservice.product.model.ProductSearchResponse;
 import com.CapStone.blinkitservice.product.entity.ProductEntity;
 import com.CapStone.blinkitservice.product.enums.SearchFilters;
 import com.CapStone.blinkitservice.product.transformer.ProductTransformer;
@@ -22,14 +22,14 @@ public class ProductService {
 
 
 
-    public ProductSearchResponseDto querySearch(String query, Pageable pageable, String userEmail){
+    public ProductSearchResponse querySearch(String query, Pageable pageable, String userEmail){
 
         Page<ProductEntity> products = productRepository.findAllProductsByQuery(query, pageable);
         HashMap<Integer, Integer> quantities =  cartService.getProductVsQuantityInCartByUserEmail(userEmail);
         return ProductTransformer.createProductSearchResponse(products, quantities);
     }
 
-    public ProductSearchResponseDto categorySearch(Integer categoryId, Integer subCategoryId, SearchFilters filter, Pageable pageable, String userEmail){
+    public ProductSearchResponse categorySearch(Integer subCategoryId, SearchFilters filter, Pageable pageable, String userEmail){
 
         Page<ProductEntity> products = productRepository.findAllProductsByFilter(subCategoryId, filter.name(), pageable);
         HashMap<Integer, Integer> quantities =  cartService.getProductVsQuantityInCartByUserEmail(userEmail);
@@ -38,7 +38,7 @@ public class ProductService {
     }
 
 
-    public ProductDetailResponseDto productDetail(int id, String userEmail) throws Exception {
+    public ProductDetailResponse productDetail(int id, String userEmail) throws Exception {
 
         ProductEntity product = productRepository.findById(id).get();
         HashMap<Integer, Integer> quantities =  cartService.getProductVsQuantityInCartByUserEmail(userEmail);
