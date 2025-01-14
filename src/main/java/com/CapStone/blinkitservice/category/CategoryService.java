@@ -16,33 +16,27 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public List<CategoryResponse> getCategories() {
+
         List<CategoryEntity> categories = categoryRepository.findAll();
         List<CategoryResponse> categoriesResponseList = new ArrayList<>();
-        SubCategoryEntity defaultSubCategory = null;
 
-        if(!categories.isEmpty()){
-            List<SubCategoryEntity> subcategories = categories.getFirst().getSubCategoryEntities();
-            if(!subcategories.isEmpty()){
-                defaultSubCategory = subcategories.getFirst();
-            }
-        }
+        for(CategoryEntity category : categories) {
 
-        for(CategoryEntity category : categories){
+            SubCategoryEntity subCategory = category.getSubCategoryEntities().getFirst();
+
+            DefaultSubcategory defaultSubCategory = DefaultSubcategory.builder()
+                    .id(subCategory.getId())
+                    .title(subCategory.getTitle())
+                    .build();
+
             CategoryResponse categoryResponse = CategoryResponse.builder()
                     .categoryId(category.getId())
                     .title(category.getTitle())
                     .imageUrl(category.getImageUrl())
+                    .defaultSubcategory(defaultSubCategory)
                     .build();
-            categoriesResponseList.add(categoryResponse);
-        }
 
-        if(defaultSubCategory != null && !categoriesResponseList.isEmpty()){
-            categoriesResponseList.getFirst().setDefaultSubcategory(
-                    DefaultSubcategory.builder()
-                            .id(defaultSubCategory.getId())
-                            .title(defaultSubCategory.getTitle())
-                            .build()
-            );
+            categoriesResponseList.add(categoryResponse);
         }
 
         return  categoriesResponseList;
