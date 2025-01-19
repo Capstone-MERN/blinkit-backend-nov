@@ -24,7 +24,7 @@ public class SubCategoryEntity {
     @Column(name = "image_url")
     String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name = "category_id", nullable = false)
     CategoryEntity categoryEntity;
 }

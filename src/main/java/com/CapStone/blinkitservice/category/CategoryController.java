@@ -1,6 +1,7 @@
 package com.CapStone.blinkitservice.category;
 
 import com.CapStone.blinkitservice.category.model.CategoryResponse;
+import com.CapStone.blinkitservice.category.model.SubCategoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,4 +19,11 @@ public class CategoryController {
        List<CategoryResponse> categoriesResponse = categoryService.getCategories();
        return ResponseEntity.ok().body(categoriesResponse);
     }
+
+    @GetMapping("/getSubCategories")
+    public ResponseEntity<List<SubCategoryResponse>> getAllSubCategory(@RequestParam("categoryId") int categoryId){
+        List<SubCategoryResponse> subCategories=categoryService.getSubCategories(categoryId);
+        return ResponseEntity.ok(subCategories);
+    }
+
 }
