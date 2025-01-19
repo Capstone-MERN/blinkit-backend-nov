@@ -26,6 +26,4 @@ public class CategoryEntity {
     @Column(name = "image_url", nullable = false)
     String imageUrl;
 
-    @OneToMany(mappedBy = "categoryEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<SubCategoryEntity> subCategoryEntities;
 }

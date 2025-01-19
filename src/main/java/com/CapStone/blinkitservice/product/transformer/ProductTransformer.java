@@ -66,7 +66,7 @@ public class ProductTransformer {
         transformedMetaData.setDetails(new ArrayList<>());
         transformedMetaData.setImages(new ArrayList<>());
 
-        JsonNode galleryNode = rootNode.at("/product/gallery");
+        JsonNode galleryNode = rootNode.at("/gallery");
         if (galleryNode != null && galleryNode.isObject()) {
             if (galleryNode.has("mainPhoto")) {
                 transformedMetaData.getImages().add(galleryNode.get("mainPhoto").asText());
